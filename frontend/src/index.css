@@ -17,7 +17,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: 'Roboto', sans-serif; */
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
 }
 ul{
     list-style:  none;
@@ -69,6 +70,4 @@ a{
 }
 /*  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
