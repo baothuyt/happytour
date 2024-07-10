@@ -9,8 +9,10 @@
 }
 header{
     position: relative;
+    text-decoration: none;
 }
 .header_top i{
+    text-decoration: none;
     position: fixed;
     margin: 12px;
     font-size: 35px;
@@ -19,6 +21,7 @@ header{
     z-index: 1;
 }
 .header_top ul{
+    text-decoration: none;
     position: fixed;
     right: 0;
     width: 300px;
@@ -31,9 +34,11 @@ header{
 }
 .header_top ul.active{
     display: block;
+    text-decoration: none;
     opacity: 1;
 }
 .header_top ul li{
+    text-decoration: none;
     margin-bottom: 20px;
     font-size: 20px;
     cursor: pointer;
@@ -48,6 +53,7 @@ header{
     }
 }
 .header_top ul li a{
+    text-decoration: none;
     display: block;
     background-color: var(--main-color);
     padding: 15px;
@@ -61,3 +67,7 @@ header{
 }
 
 /* ---End Header--- */
+
+  
+  
+  
