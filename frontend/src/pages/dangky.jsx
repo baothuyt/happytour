@@ -83,7 +83,7 @@ const Dangky = () => {
                     />
                 </div>
                 <div className="col-12">
-                    Đã có tài khoản? <Link to="/dangnhap"><a href="/" className="text-decoration-none fw-bold">Quay về trang đăng nhập</a></Link>
+                    Đã có tài khoản? <Link to="/dangnhap" className="text-decoration-none fw-bold">Quay về trang đăng nhập</Link>
                 </div>
                 
                 <div className="col-12 d-flex justify-content-center">

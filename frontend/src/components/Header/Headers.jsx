@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import styles from './Headers.module.css'; // Import the CSS module
 import { Link } from 'react-router-dom';
@@ -15,20 +14,17 @@ const Headers = () => {
       <div className={styles.header_top}>
         <i className="fas fa-bars" onClick={handleMenuClick}></i>
         <ul className={`${isMenuActive ? styles.active : ''}`}>
-        <li style={{ '--x': 1 }}><a href="">Trang chủ</a></li>
-        <li style={{ '--x': 2 }}><a href="">Địa điểm</a></li>
-        <li style={{ '--x': 3 }}><a href="">Về chúng tôi</a></li>
-        <Link to ="/blog"><li style={{ '--x': 4 }}><a href="">Blog</a></li></Link>
-        
-        <li style={{ '--x': 5 }}><a href="">Liên hệ</a></li>
-        <Link to="/dangky"><li style={{ '--x': 6 }}><a href="">Tài khoản</a></li></Link>
-        
-      </ul>
+          <li style={{ '--x': 1 }}><Link to="/">Trang chủ</Link></li>
+          <li style={{ '--x': 2 }}><Link to="/locations">Địa điểm</Link></li>
+          <li style={{ '--x': 3 }}><Link to="/about">Về chúng tôi</Link></li>
+          <li style={{ '--x': 4 }}><Link to="/blog">Blog</Link></li>
+          <li style={{ '--x': 5 }}><Link to="/contact">Liên hệ</Link></li>
+          <li style={{ '--x': 6 }}><Link to="/dangky">Tài khoản</Link></li>
+        </ul>
       </div>
       <div className={styles.video_container}>
         <video src="/img/bn2.mp4" autoPlay muted loop></video>
       </div>
-      
     </header>
   );
 };

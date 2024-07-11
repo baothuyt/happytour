@@ -33,7 +33,7 @@ const Dangnhap = () => {
                     />
                 </div>
                 <div className="col-12">
-                    Chưa có tài khoản? <Link to="/dangky"><a href="/" className="text-decoration-none fw-bold">Tạo tài khoản ở đây</a></Link> 
+                    Chưa có tài khoản? <Link to="/dangky" className="text-decoration-none fw-bold"> Tạo tài khoản ở đây</Link> 
                 </div>
                 <div className="col-12 d-flex justify-content-center">
                     <button type="button" className="btn btn-success fw-bold px-5">

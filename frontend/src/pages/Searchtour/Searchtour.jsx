@@ -1,25 +1,24 @@
 import styles from './Searchtour.module.css';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import React from 'react'
+import { NavLink } from 'react-router-dom';
+import { createSlug } from '../../ultils/helpers'
+import {useSelector} from 'react-redux'
 
+const Search = () => {
+    const {categories} = useSelector(state => state.app);
 
-
-
-const Search  = () => {
-    
- 
-    
     return (
         <div>
-           
+
             <section>
                 <div className={styles.booking_search_box}>
-                    <input type="text" placeholder="Bạn muốn đi đâu?"/>
-                    <input type="date" placeholder="Check-in"/>
-                    <input type="date" placeholder="Check-out"/>
+                    <input type="text" placeholder="Bạn muốn đi đâu?" />
+                    <input type="date" placeholder="Check-in" />
+                    <input type="date" placeholder="Check-out" />
                     <select>
                         <option value="1">1 Người</option>
                         <option value="2">2 Người</option>
@@ -33,10 +32,18 @@ const Search  = () => {
                 <aside className={styles.filters}>
                     <h3>Lọc</h3>
                     <div className={styles.filter_item}>
-                        <p>Địa điểm</p>
+                        {categories?.map(el => (
+                            <NavLink
+                                key={createSlug(el.name)}
+                                to={createSlug(el.name)}
+                            >
+                                {el.name}
+                            </NavLink>
+                        ))}
+                        {/* <p>Địa điểm</p>
                         <label><input type="checkbox" /> Hà Nội</label>
                         <label><input type="checkbox" /> Đà Lạt</label>
-                        <label><input type="checkbox" /> Đà Nẵng</label>
+                        <label><input type="checkbox" /> Đà Nẵng</label> */}
                     </div>
                 </aside>
                 <div className={styles.container}>
