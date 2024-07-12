@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './Headers.module.css'; // Import the CSS module
 import { Link } from 'react-router-dom';
+import videoSource from '../../assets/bn2.mp4';
 
 const Headers = () => {
   const [isMenuActive, setIsMenuActive] = useState(false);
@@ -23,7 +24,7 @@ const Headers = () => {
         </ul>
       </div>
       <div className={styles.video_container}>
-        <video src="/img/bn2.mp4" autoPlay muted loop></video>
+        <video src={videoSource} autoPlay muted loop>phat</video>
       </div>
     </header>
   );

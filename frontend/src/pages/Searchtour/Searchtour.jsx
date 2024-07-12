@@ -3,13 +3,24 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { createSlug } from '../../ultils/helpers'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
+import TourCard from '../../components/TourCard';
+import { apiGetTours } from '../../apis'
 
 const Search = () => {
-    const {categories} = useSelector(state => state.app);
+    const [tours, setTours] = useState(null)
+    const { categories } = useSelector(state => state.app);
+
+    const fetchTours = async () => {
+        const response = await apiGetTours()
+        if (response.success) setTours(response.toursData)
+    }
+    useEffect(() => {
+        fetchTours()
+    }, [])
 
     return (
         <div>
@@ -47,7 +58,19 @@ const Search = () => {
                     </div>
                 </aside>
                 <div className={styles.container}>
-                    <div className={styles.card}>
+                    {tours?.map(el => (
+                        <TourCard
+                            key={el._id}
+                            image={el.thumb}
+                            name={el.name}
+                            totalRatings={el.totalRatings}
+                            price={el.price} 
+                            description={el.description} 
+                            ratings={el.ratings.length}
+                            />
+                    ))}
+
+                    {/* <div className={styles.card}>
                         <img src="https://qltt.vn/stores/news_dataimages/trunglb/052022/19/11/4539_2-BaDinh-08-1440985910.jpg?rt=20220519114541" alt="Tour 1" />
                         <div className={styles.content}>
                             <h3>Buổi biểu diễn múa rối nước Thăng Long</h3>
@@ -85,7 +108,7 @@ const Search = () => {
                     <div className={styles.load_more_container}>
                         <p>Bạn đã xem 120 trong số 1103 địa điểm tham quan</p>
                         <button className={styles.load_more_button}>Hiển thị thêm</button>
-                    </div>
+                    </div> */}
                 </div>
             </section>
             {/* <Footer /> */}

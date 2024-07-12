@@ -84,10 +84,10 @@ const HomePages = () => {
                             {bestSellers?.map(el => (
                                 <div key={el._id} className={styles.nice_place_item}>
                                     <div className={styles.nice_place_img}>
-                                        <img src={el.images[0]} alt="" />
+                                        <img src={ el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
                                     </div>
                                     <div className={styles.nice_place_text}>
-                                        <h2>{el.name}</h2>
+                                        <h2 className='truncate'>{el.name}</h2>
                                         {(renderRatingStars(el.totalRatings).map(star => star))}
                                        
                                         <p>{el.description}</p>
@@ -220,82 +220,22 @@ const HomePages = () => {
 
             <section className={styles.tour}>
                 <div className={styles.container}>
-                    <h1>Tour Hè 2024</h1>
+                    <h1>Tour Mới Nhất 2024</h1>
                     <div className={styles.tour_content} id="row">
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://cdn3.ivivu.com/2023/10/du-lich-Da-Lat-ivivu.jpg" alt="" />
 
+                    {newTours?.map(el => (
+                        <div key={el._id} className={styles.tour_content_item} id="row">
+                            <div className={styles.tour_content_item_img}>
+                                <img src={ el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
                             </div>
                             <div className={styles.tour_content_item_text}>
-                                <h2>Đà Lạt</h2>
-                                <p>Đà Lạt là thủ phủ của tỉnh Lâm Đồng. Với độ cao 1.500 m trên mặt nước biển. tiết trời Đà Lạt mát lạnh, là nơi nghỉ dưỡng lý tưởng ở khu vực miền Nam.</p>
+                                <h2>{el.name}</h2>
+                                <p>{el.description}</p>
                                 <button>Khám phá</button>
                             </div>
                         </div>
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://lh5.googleusercontent.com/proxy/wyG_LljX3QV2RZjPMpns6tn1rIpke_-6AWZgk2gMw2brKy4xz75JSSXCvh_XGMT7Lh668oomHjmz2zkjZVS5ZMhRQjR-zu53x4GZ6OMQ0eTE_aypLgC0jo4nF3LvrkwIL43cSP2vLRxQOiFDbMghutJcUiKsaGijTP478e6qrqA" alt="" />
+                    ))}
 
-                            </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>Hội An</h2>
-                                <p>Đà Lạt là thủ phủ của tỉnh Lâm Đồng. Với độ cao 1.500 m trên mặt nước biển. tiết trời Đà Lạt mát lạnh, là nơi nghỉ dưỡng lý tưởng ở khu vực miền Nam.</p>
-                                <button>Khám phá</button>
-                            </div>
-                        </div>
-
-
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://vcdn1-dulich.vnecdn.net/2023/07/12/HL1-9875-1689130357.jpg?w=0&h=0&q=100&dpr=1&fit=crop&s=mN2YMaNq5Vgj_oi6A_s91Q" alt="" />
-
-                            </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>Vịnh Hạ Long</h2>
-                                <p>Đà Lạt là thủ phủ của tỉnh Lâm Đồng. Với độ cao 1.500 m trên mặt nước biển. tiết trời Đà Lạt mát lạnh, là nơi nghỉ dưỡng lý tưởng ở khu vực miền Nam.</p>
-                                <button>Khám phá</button>
-                            </div>
-                        </div>
-
-
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://static.vinwonders.com/production/check-in-hue-1.jpg" alt="" />
-
-                            </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>Huế</h2>
-                                <p>Đà Lạt là thủ phủ của tỉnh Lâm Đồng. Với độ cao 1.500 m trên mặt nước biển. tiết trời Đà Lạt mát lạnh, là nơi nghỉ dưỡng lý tưởng ở khu vực miền Nam.</p>
-                                <button>Khám phá</button>
-                            </div>
-                        </div>
-
-
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://vcdn1-dulich.vnecdn.net/2022/06/03/cauvang-1654247842-9403-1654247849.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=Swd6JjpStebEzT6WARcoOA" alt="" />
-
-                            </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>Đà Nẵng</h2>
-                                <p>Đà Nẵng là thành phố của những cây cầu và được mệnh danh là thành phố đáng sống nhất Việt Nam. Nổi tiếng với hình ảnh Cầu Rồng vừa mạnh mẽ vừa uy nghiêm, thành phố phố Đà Nẵng được thiên nhiên ưu ái ban tặng những bãi biển trong xanh cùng hàng loạt hòn đảo ấn tượng.</p>
-                                <button>Khám phá</button>
-                            </div>
-                        </div>
-
-
-                        <div className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src="https://i-dulich.vnecdn.net/2022/07/05/pho-cao-ha-giang-8752-16487185-3640-9541-1657019231.jpg" alt="" />
-
-                            </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>Hà Giang</h2>
-                                <p>Bạn có thể du lịch Hà Giang vào bất kỳ mùa nào trong năm. Người ta thường đến Hà Giang vào mùa thu lúa chín vàng. Thời gian đẹp nhất là tháng 10, 11 và 12, khi hoa tam giác mạch hay những cánh đồng cải khoe sắc. Còn mùa xuân, hoa mơ, hoa mận nở trắng rừng khiến bạn như đang bồng bềnh trên mây.</p>
-                                <button>Khám phá</button>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
