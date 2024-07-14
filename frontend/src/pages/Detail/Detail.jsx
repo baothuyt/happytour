@@ -1,43 +1,59 @@
+import { useParams } from 'react-router-dom';
 import styles from './Detail.module.css';
 // import Footer from './../Footer/Footer';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-
+import { apiGetTour } from '../../apis/tour';
+import { useEffect } from 'react';
+//import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
+import { useState } from 'react';
+import { } from '../../ultils/helpers'
 
 
 
 const Detail  = () => {
     
- 
-    
+    const { tourId, name} = useParams()
+    const [tour, setTour] = useState(null)
+
+    const fetchTours = async () => {
+        const response = await apiGetTour(tourId)
+        if (response.success) setTours(response.toursData)
+    }
+    useEffect(() => {
+        if (tourId) fetchTours()
+    }, [tourId])
     return (
         <div>
             
             <section className={styles.nice_place}>
                 <div className={styles.container}>
                     <div className={styles.tour_content_text_head}>
-                        <span>Trang chủ &gt; Tour miền bắc &gt; HÀ NỘI - NINH BÌNH - HẠ LONG - YÊN TỬ - SA PA (đường cao tốc) - HÀ NỘI</span>
+                        {/* <h3>{name}</h3> */}
+                        {/* <Breadcrumbs/> */}
+                        {/* <span>Trang chủ &gt; Tour miền bắc &gt; HÀ NỘI - NINH BÌNH - HẠ LONG - YÊN TỬ - SA PA (đường cao tốc) - HÀ NỘI</span> */}
                     </div>
                     <hr />
                     <div className={styles.tour_content} id="row">
-                            <div className={styles.tour_content_img}>
-                                <img src="https://qltt.vn/stores/news_dataimages/trunglb/052022/19/11/4539_2-BaDinh-08-1440985910.jpg?rt=20220519114541" alt="" />
+                        <div className={styles.tour_content_img}>
+                                {/* <img src="https://qltt.vn/stores/news_dataimages/trunglb/052022/19/11/4539_2-BaDinh-08-1440985910.jpg?rt=20220519114541" alt="" /> */}
+                            <img src= {tour?.image} alt="" />
                                 
-                            </div>
-                            <div className={styles.tour_content_text}>
-                                <h2>HÀ NỘI - NINH BÌNH - HẠ LONG - YÊN TỬ - SA PA (đường cao tốc) - HÀ NỘI</h2>
-                                <hr />
-                                <p><i className="fa-regular fa-clock"></i> Thời gian: 6 NGÀY 5 ĐÊM</p>
-                                <p><i className="fa-regular fa-calendar-check"></i> Ngày Khởi Hành: Thứ 5 Hàng Tuần</p>
-                                <p><i className="fa-solid fa-plane"></i> Vận Chuyển: VIETJET AIR</p>
-                                <p><i className="fa-solid fa-hotel"></i> Khách Sạn: 3*</p>
-                                <p><i className="fa-solid fa-lightbulb"></i> Mã Tour: MB6NSĐ-APL</p>
-                                <h2>Liên hệ</h2>
-                                <button><i className='fa-solid fa-cart-plus'></i> ĐẶT NGAY</button>
-                            </div> 
                         </div>
+                        <div className={styles.tour_content_text}>
+                            <h2>{tour?.name}</h2>
+                                <hr />
+                            <p><i className="fa-regular fa-clock"></i> Thời gian: 6 NGÀY 5 ĐÊM</p>
+                            <p><i className="fa-regular fa-calendar-check"></i> Ngày Khởi Hành: Thứ 5 Hàng Tuần</p>
+                            <p><i className="fa-solid fa-plane"></i> Vận Chuyển: VIETJET AIR</p>
+                            <p><i className="fa-solid fa-hotel"></i> Khách Sạn: 3*</p>
+                            <p><i className="fa-solid fa-lightbulb"></i> Mã Tour: MB6NSĐ-APL</p>
+                            <h2>Liên hệ</h2>
+                            <button><i className='fa-solid fa-cart-plus'></i> ĐẶT NGAY</button>
+                        </div> 
+                    </div>
                 </div>
             </section>
         

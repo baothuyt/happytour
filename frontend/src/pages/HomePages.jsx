@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { createSlug } from '../ultils/helpers'
 import { useSelector } from 'react-redux'
 import { apiGetTours } from '../apis/tour';
@@ -91,7 +91,9 @@ const HomePages = () => {
                                         {(renderRatingStars(el.totalRatings).map(star => star))}
                                        
                                         <p>{el.description}</p>
-                                        <button>Đặt Tour</button>
+                                        <Link to={`/detail/${el._id}`}>
+                                            <button>Đặt Tour</button>
+                                        </Link>
                                     </div>
                                 </div>
                             ))}
@@ -108,7 +110,7 @@ const HomePages = () => {
                                 <div className={styles.right}>
                                     <div className={styles.right_top}>
                                         <img className={styles.img_right_top} alt=""
-                                            src=""
+                                            src="https://danangairportterminal.vn/media/1693/image.jpg?format=jpg&quality=85&mode=crop&width=442&height=528"
                                         />
                                     </div>
                                     <div className={styles.right_bot}>
