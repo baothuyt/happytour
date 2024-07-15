@@ -91,7 +91,7 @@ const HomePages = () => {
                                         {(renderRatingStars(el.totalRatings).map(star => star))}
                                        
                                         <p>{el.description}</p>
-                                        <Link to={`/detail/${el._id}`}>
+                                        <Link to={`/${el.category?.toLowerCase()}/${el._id}/${el.name}`}>
                                             <button>Đặt Tour</button>
                                         </Link>
                                     </div>
