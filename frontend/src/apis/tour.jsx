@@ -8,6 +8,5 @@ export const apiGetTours = (params) => axios({
 
 export const apiGetTour = (tourId) => axios({
     url: '/api/tour/' +tourId,
-    method: 'get',
-    params
+    method: 'get'
 })
