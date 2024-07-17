@@ -8,10 +8,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { NavLink } from 'react-router-dom';
 import { createSlug } from '../ultils/helpers'
-import { useSelector } from 'react-redux'
 import { apiGetTours } from '../apis/tour';
 import { useState, useEffect } from 'react';
 import Slider from "react-slick";
+import { getNewTours } from '../store/tours/asyncAction';
+import { useDispatch, useSelector } from 'react-redux';
 
 const settings = {
     dots: false,
@@ -42,22 +43,21 @@ const images = [
 
 const HomePages = () => {
     const [bestSellers, setBestSellers] = useState(null)
-    const [newTours, setNewTours] = useState(null)
-
+    const dispath = useDispatch()
+    const {newTours} = useSelector(state => state.tours)
+    
+    // get data of user's reducer in store
+    const {isLoggedIn, current} =useSelector(state => state.user)
     // Get categories from store
     const { categories } = useSelector(state => state.app);
-
     // Get tours by axios
     const fetchTours = async () => {
-        const response = await Promise.all([
-            apiGetTours({ sort: '-sold' }),
-            apiGetTours({ sort: '-createdAt' })
-        ]);
-        if (response[0]?.success) setBestSellers(response[0].toursData);
-        if (response[1]?.success) setNewTours(response[1].toursData);
+        const response = await apiGetTours({ sort: '-sold' })
+        if (response.success) setBestSellers(response.toursData);
     };
     useEffect(() => {
         fetchTours();
+        dispath(getNewTours())
     }, []);
     return (
         <div>
