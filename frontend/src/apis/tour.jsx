@@ -10,3 +10,10 @@ export const apiGetTour = (tourId) => axios({
     url: '/api/tour/' +tourId,
     method: 'get'
 })
+
+//admin
+export const apiCreateTour = (data) => axios({
+    url: '/api/tour/' ,
+    method: 'post',
+    data
+})

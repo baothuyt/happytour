@@ -50,13 +50,22 @@ export const validate = (payload, setInvalidFields) => {
 export const totalBooking = (price, adult = 0, children = 0) => {
     return adult * price + children * price * 0.75
 }
- 
+
 export const formatDate = (date) => {
-    if(!date) return'';
+    if (!date) return '';
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0'); // Tháng trong JavaScript bắt đầu từ 0
     const year = d.getFullYear();
-  
+
     return `${day}/${month}/${year}`;
-  };
+};
+export function getBase64(file) {
+    if (!file) return ''
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}

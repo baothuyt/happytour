@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,Fragment } from 'react';
 import Logo from './../../assets/Logo.png';
 import { MdOutlineDashboard } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
@@ -9,43 +9,72 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { LuLayers } from "react-icons/lu";
 import RightArrow from "./../../assets/icons/rightArrow.svg";
 import { motion } from "framer-motion";
-import { Link } from 'react-router-dom';
-
+import { Link, NavLink } from 'react-router-dom';
+//import { createSlug } from '../../ultils/helpers'
+import path from '../../ultils/path';
 const navLinks = [
     {
         name: "Dashboard",
         icon: MdOutlineDashboard,
-        link: "dashboard"
+        link: "dashboard",
+        type: 'SINGLE',
+        path: `/${path.ADMIN}/${path.DASHBOARD}`
     },
     {
         name: "Users",
         icon: FiUsers,
-        link: "user"
+        link: "user",
+        type: 'SINGLE',
+        path: `/${path.USERS}`
+
     },
     {
         name: "Bookings",
         icon: LuTicket,
-        link: "booking"
+        link: "booking",
+        type: 'SINGLE',
+        path: `/${path.BOOKINGPAGE}`
+
     },
     {
         name: "Categories",
         icon: LuLayers,
-        link: "category"
+        link: "category",
+        type: 'SINGLE',
+        path: `/${path.CATEGORYPAGE}`
+
     },
     {
         name: "Tours",
         icon: GrMapLocation,
-        link: "tour"
+        link: "tour",
+        type: 'SINGLE',
+        path: `/${path.TOURPAGE}`
+
+    },
+    {
+        name: "CreateTours",
+        icon: GrMapLocation,
+        link: "create",
+        type: 'SINGLE',
+        path: `/${path.CREATETOURS}`
+
     },
     {
         name: "Tour Active",
         icon: TbPlaneDeparture,
-        link: "tour-active"
+        link: "tour-active",
+        type: 'SINGLE',
+        path: `/${path.TOURACTIVEPAGE}`
+
     },
     {
         name: "Comments",
         icon: FaRegCommentDots,
-        link: "comment"
+        link: "comment",
+        type: 'SINGLE',
+        path: `/${path.COMMENTPAGE}`
+
     },
 ];
 
@@ -85,6 +114,7 @@ const NavigationBar = () => {
                         <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
                     </Link>
                 ))}
+                
             </div>
         </motion.div>
     )
