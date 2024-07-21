@@ -76,7 +76,6 @@ const Dangnhap = () => {
 
     const finalRegister = async () => {
         const response = await apiFinalRegister(token)
-        console.log(response)
         if (response.success) {
             Swal.fire('Congratulations!', response.response, 'success').then(() => { setIsRegister(false); resetPayload() })
         } else Swal.fire('Oops!', response.response, 'error')

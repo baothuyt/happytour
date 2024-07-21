@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './Detail.module.css';
 // import Footer from './../Footer/Footer';
 import 'swiper/css';
@@ -9,14 +9,8 @@ import { apiGetTour } from '../../apis/tour';
 import { useEffect } from 'react';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import { useState } from 'react';
-// import { formatMoney } from '../../ultils/helpers'
-export const formatMoney = (number) => {
-    if (typeof number === 'number') {
-      return Number(number).toLocaleString();
-    } else {
-      return '0';
-    }
-  };
+import { formatMoney } from '../../ultils/helpers';
+
 const renderRatingStars = (totalRatings) => {
     const stars = [];
     const maxStars = 5; // Số sao tối đa
@@ -66,13 +60,16 @@ const Detail  = () => {
                             {(renderRatingStars(tours?.totalRatings).map(star => star))}
                                 <hr />
 
-                            <p><i className="fa fa-solid fa-dollar-sign"></i> Giá tour: {`${formatMoney(tours?.price)} VNĐ`} </p>
+                            <p><i className="fa fa-solid fa-dollar-sign"></i> Giá tour: {`${formatMoney(tours?.price || 0)} VNĐ`} </p>
                             <p><i className="fa fa-regular fa-calendar-check"></i> Ngày Khởi Hành: Thứ 5 Hàng Tuần</p>
                             <p><i className="fa fa-solid fa-plane"></i> Vận Chuyển: VIETJET AIR</p>
                             <p><i className="fa fa-solid fa-hotel"></i> Khách Sạn: 3*</p>
                             <p><i className="fa fa-solid fa-lightbulb"></i> Mã Tour: MB6NSĐ-APL</p>
                             <h2>Liên hệ</h2>
-                            <button><i className='fa fa-solid fa-cart-plus'></i> ĐẶT NGAY</button>
+                            <Link 
+                            className='no-underline py-3 px-2.5 rounded-lg bg-[#5dbc5d] text-white hover:bg-[#7fd97f] transition ease-in' 
+                            to={`/thanhtoan/${tourId}`}><i 
+                            className='fa fa-solid fa-cart-plus'></i> ĐẶT NGAY</Link>
                         </div> 
                     </div>
                 </div>
@@ -344,7 +341,7 @@ const Detail  = () => {
                                 <p>Đặc điểm khí hậu ở miền Bắc thường thay đổi theo từng vùng, từng mùa. Nên các bạn nhớ trang bị quần áo phù hợp theo mùa và điểm đến, ưu tiên gọn nhẹ, nhưng phải đủ ấm. Vào mùa hè thời tiết phụ thuộc vào từng khu vực, có thể ăn mặc thoải mái nhưng vẫn cần một chiếc áo khoác. Mùa đông hơi lạnh lẽo, nên chọn áo ấm, găng tay, khăn, mũ len các loại để chống chọi cái rét lạnh miền Bắc.</p>
                             </div>
                             <div className={styles.button_container}>
-                                <button className={styles.btn_text}>ĐẶT NGAY</button>
+                                <Link to={`/thanhtoan/${tourId}`} className={styles.btn_text}>ĐẶT NGAY</Link>
                             </div>
                         </div>
                     </div>

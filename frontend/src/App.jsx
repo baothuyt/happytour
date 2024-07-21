@@ -4,7 +4,6 @@ import Layout1 from "./layouts/layout1";
 import Layout2 from "./layouts/layout2";
 import HomePages from "./pages/HomePages";
 import Dangnhap from "./pages/dangnhap"
-import Dangky from "./pages/dangky";
 import Searchtour from "./pages/Searchtour/Searchtour";
 import Thanhtoan from "./pages/thanhtoan";
 import ThaydoiThongtinCaNhan from "./pages/changett";
@@ -39,9 +38,8 @@ function App() {
         <Route path="/search" element={<Layout2><Searchtour /></Layout2>} />
         <Route path="/:category/:tourId/:name" element={<Layout2><Detail /></Layout2>} />
         <Route path="/blog" element={<Layout2><BlogList /></Layout2>} />
-        <Route path="/dangky" element={<Layout1><Dangky /></Layout1>} />
         <Route path="/dangnhap" element={<Layout1><Dangnhap /></Layout1>} />
-        <Route path="/thanhtoan" element={<Layout2><Thanhtoan /></Layout2>} />
+        <Route path="/thanhtoan/:tourId" element={<Layout2><Thanhtoan /></Layout2>} />
         <Route path="/bookinghistory" element={<Layout2><BookingHistory /></Layout2>} />
         <Route path="/thaydoi" element={<Layout1><ThaydoiThongtinCaNhan /></Layout1>} />
         <Route path="/home" element={<Layout><HomePages /></Layout>} />
