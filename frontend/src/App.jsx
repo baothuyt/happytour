@@ -17,6 +17,7 @@ import UsersPage from "./pages/admin/UsersPage";
 import BookingPage from "./pages/admin/BookingPage";
 import CategoryPage from "./pages/admin/CategoryPage";
 import TourPage from "./pages/admin/TourPage";
+import CreateTour from "./pages/admin/CreateTours";
 import TourActivePage from "./pages/admin/TourActivePage";
 import CommentPage from "./pages/admin/CommentPage";
 import FinalRegister from "./pages/public/FinalRegister";
@@ -54,6 +55,7 @@ function App() {
           <Route path="booking" element={<BookingPage />} />
           <Route path="category" element={<CategoryPage />} />
           <Route path="tour" element={<TourPage />} />
+          <Route path="create" element={<CreateTour />} />
           <Route path="tour-active" element={<TourActivePage />} />
           <Route path="comment" element={<CommentPage />} />
         </Route>

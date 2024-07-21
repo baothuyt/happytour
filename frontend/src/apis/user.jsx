@@ -33,3 +33,15 @@ export const apiGetCurrent = () => axios({
     url: '/api/user/current',
     method: 'get',
 })
+
+// Admin
+export const apiGetUser = (params) => axios({
+    url: '/api/user',
+    method: 'get',
+    params
+})
+// export const apiUpdateUser = (data, uid) => axios({
+//     url: '/api/user' +uid,
+//     method: 'put',
+//     params
+// })
