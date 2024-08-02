@@ -621,6 +621,12 @@ border: none;
   font-family: Arial, sans-serif;
   color: #206b20;
 }
+.tour_content_text div{
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  color: #206b20;
+}
+
 .more_title{
   border-bottom: 2px solid #214e21;
   margin-bottom: 40px;

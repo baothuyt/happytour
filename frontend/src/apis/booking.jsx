@@ -5,3 +5,8 @@ export const apiCreateBooking = (data) => axios({
     method: 'post',
     data
 })
+
+export const apiGetBookings = () => axios({
+    url: '/api/booking',
+    method: 'get',
+})

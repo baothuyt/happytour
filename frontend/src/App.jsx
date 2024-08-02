@@ -36,14 +36,14 @@ function App() {
   <>
       <Routes>
         <Route path="/" element={<Layout><HomePages /></Layout>} />
-        <Route path="/search" element={<Layout2><Searchtour /></Layout2>} />
-        <Route path="/:category/:tourId/:name" element={<Layout2><Detail /></Layout2>} />
+        <Route path="/home" element={<Layout><HomePages /></Layout>} />
         <Route path="/blog" element={<Layout2><BlogList /></Layout2>} />
+        <Route path="/:category/:tourId/:name" element={<Layout2><Detail /></Layout2>} />
         <Route path="/dangnhap" element={<Layout1><Dangnhap /></Layout1>} />
         <Route path="/thanhtoan/:tourId" element={<Layout2><Thanhtoan /></Layout2>} />
         <Route path="/bookinghistory" element={<Layout2><BookingHistory /></Layout2>} />
         <Route path="/thaydoi" element={<Layout1><ThaydoiThongtinCaNhan /></Layout1>} />
-        <Route path="/home" element={<Layout><HomePages /></Layout>} />
+        <Route path="/:category" element={<Layout2><Searchtour /></Layout2>} />
         <Route path="/finalregister/:status" element={<FinalRegister />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/admin" element={<AdminLayout />}>

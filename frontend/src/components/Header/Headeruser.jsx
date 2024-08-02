@@ -4,7 +4,7 @@ const Headeruser = () => {
     return (
         <div className={styles.box}>
             <div className={styles.headeruser}>
-               <Link to={'/home'}> <img className={styles.rectangle} src="../../../public/img/_Travel.png" /></Link>
+               <Link to={'/'}> <img className={styles.rectangle} src="../../../public/img/_Travel.png" /></Link>
             </div>
         </div>
     )

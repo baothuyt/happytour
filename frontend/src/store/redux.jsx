@@ -21,6 +21,11 @@ export const store = configureStore({
     tours: tourSlice,
     user: persistReducer(userConfig, userSlice)
   },
+  // Thêm middleware nếu cần
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Tắt kiểm tra tuần tự hóa nếu cần (sử dụng cẩn thận)
+    }),
 });
 
 export const persistor = persistStore(store)

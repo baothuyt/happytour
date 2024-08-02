@@ -3,115 +3,117 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom';
-import { createSlug } from '../../ultils/helpers'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState, useCallback } from 'react'
+import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
 import TourCard from '../../components/TourCard';
 import { apiGetTours } from '../../apis'
+import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
+import SearchItem from '../../components/SearchItem';
+import InputSelect from '../../components/InputSelect';
+import { sorts } from '../../ultils/constant';
 
 const Search = () => {
+    const navigate = useNavigate();
+    const { category } = useParams();
     const [tours, setTours] = useState(null)
-    const { categories } = useSelector(state => state.app);
+    const [activeClick, setActiveClick] = useState(null)
+    const [sort, setSort] = useState('')
+    const [params] = useSearchParams()
 
-    const fetchTours = async () => {
-        const response = await apiGetTours()
+    const fetchToursByCategory = async (queries) => {
+        const response = await apiGetTours(queries)
         if (response.success) setTours(response.toursData)
     }
     useEffect(() => {
-        fetchTours()
-    }, [])
+        let param = []
+        for (let i of params.entries()) param.push(i)
+        const queries = {}
+        for (let i of param) queries[i[0]] = i[1]
 
+        let priceQuery = {}
+        if (queries.from && queries.to) {
+            priceQuery = {
+                $and: [
+                    { price: { gte: queries.from } },
+                    { price: { lte: queries.to } }
+                ]
+            }
+            delete queries.price
+        }
+        if (queries.from) queries.price = { gte: queries.from }
+        if (queries.to) queries.price = { lte: queries.to }
+        delete queries.to
+        delete queries.from
+
+        fetchToursByCategory({ ...priceQuery, ...queries })
+    }, [params])
+    const changeActiveFilter = useCallback((name) => {
+        if (activeClick === name) setActiveClick(null)
+        else setActiveClick(name)
+    }, [activeClick])
+    const changeValue = useCallback((value) => {
+        setSort(value)
+    }, [sort])
+
+    useEffect(() => {
+        navigate({
+            pathname: `/${category}`,
+            search: createSearchParams({ sort }).toString()
+        })
+    }, [sort])
     return (
         <div>
-
+            <section className={styles.container}>
+                <div>
+                    <div className='w-full mt-4'>
+                        <h3 className='font-semibold uppercase'>{category}</h3>
+                        <Breadcrumbs category={category} />
+                    </div>
+                </div>
+            </section>
             <section>
                 <div className={styles.booking_search_box}>
-                    <input type="text" placeholder="Bạn muốn đi đâu?" />
-                    <input type="date" placeholder="Check-in" />
-                    <input type="date" placeholder="Check-out" />
-                    <select>
-                        <option value="1">1 Người</option>
-                        <option value="2">2 Người</option>
-                        <option value="3">3 Người</option>
-                        <option value="4">4 Người</option>
-                    </select>
-                    <button>Tìm kiếm</button>
+                    <div className='w-4/5 flex-auto flex flex-col gap-3'>
+                        <span className='font-semibold text-sm'>Lọc theo:</span>
+                        <div className='flex items-center gap-4'>
+                            <SearchItem
+                                name='price'
+                                activeClick={activeClick}
+                                changeActiveFilter={changeActiveFilter}
+                                type='input'
+                            />
+                            <SearchItem
+                                name='tag'
+                                activeClick={activeClick}
+                                changeActiveFilter={changeActiveFilter}
+                            />
+                        </div>
+                    </div>
+                    <div className='w-1/5 flex flex-col gap-3'>
+                        <span className='font-semibold text-sm'>Sắp xếp theo:</span>
+                        <div className='w-full'>
+                            <InputSelect changeValue={changeValue} value={sort} options={sorts} />
+                        </div>
+                    </div>
                 </div>
             </section>
             <section className={styles.results_section}>
-                <aside className={styles.filters}>
-                    <h3>Lọc</h3>
-                    <div className={styles.filter_item}>
-                        {categories?.map(el => (
-                            <NavLink
-                                key={createSlug(el.name)}
-                                to={createSlug(el.name)}
-                            >
-                                {el.name}
-                            </NavLink>
-                        ))}
-                        {/* <p>Địa điểm</p>
-                        <label><input type="checkbox" /> Hà Nội</label>
-                        <label><input type="checkbox" /> Đà Lạt</label>
-                        <label><input type="checkbox" /> Đà Nẵng</label> */}
-                    </div>
-                </aside>
                 <div className={styles.container}>
                     {tours?.map(el => (
                         <TourCard
                             key={el._id}
+                            _id={el._id}
                             image={el.thumb}
                             name={el.name}
                             totalRatings={el.totalRatings}
-                            price={el.price} 
-                            description={el.description} 
-                            ratings={el.ratings.length}
-                            />
+                            price={el.price}
+                            description={el.description}
+                            ratings={el.ratings?.length}
+                            category={el.category?.name}
+                        />
                     ))}
-
-                    {/* <div className={styles.card}>
-                        <img src="https://qltt.vn/stores/news_dataimages/trunglb/052022/19/11/4539_2-BaDinh-08-1440985910.jpg?rt=20220519114541" alt="Tour 1" />
-                        <div className={styles.content}>
-                            <h3>Buổi biểu diễn múa rối nước Thăng Long</h3>
-                            <p>Vé xem biểu diễn tại nhà hát múa rối nước Thăng Long, Hà Nội</p>
-                            <div className={styles.rating}>⭐ 4.5 / 5 Tuyệt vời (754 đánh giá)</div>
-                            <div className={styles.options}>Có lựa chọn hủy miễn phí</div>
-                            <div className={styles.price}>Từ €4,45</div>
-                            <button className={styles.btn_check}>Xem chỗ trống &#10095;</button>
-                        </div>
-                    </div>
-                    <div className={styles.card}>
-                        <img src="path-to-image2.jpg" alt="Tour 2" />
-                        <div className={styles.content}>
-                            <h3>Tour Vịnh Hạ Long cả ngày có kèm bữa trưa, đi từ Hà Nội</h3>
-                            <p>Du thuyền với trải nghiệm chèo thuyền kayak, đi bộ đường dài và bơi lội trong vịnh</p>
-                            <div className={styles.rating}>⭐ 4.4 / 5 Tuyệt vời (192 đánh giá)</div>
-                            <div className={styles.options}>Có lựa chọn hủy miễn phí</div>
-                            <div className={styles.preference}>Lựa chọn ưa thích của du khách đi một mình</div>
-                            <div className={styles.price}>Từ US$61,50</div>
-                            <button className={styles.btn_check}>Xem chỗ trống &#10095;</button>
-                        </div>
-                    </div>
-                    <div className={styles.card}>
-                        <img src="path-to-image3.jpg" alt="Tour 3" />
-                        <div className={styles.content}>
-                            <h3>Tour đi bộ tham quan thành phố có hướng dẫn viên</h3>
-                            <p>Cùng hướng dẫn viên đi bộ và khám phá một số điểm tham quan hàng đầu ở Hà Nội</p>
-                            <div className={styles.rating}>⭐ 4.5 / 5 Tuyệt vời (213 đánh giá)</div>
-                            <div className={styles.options}>Có lựa chọn hủy miễn phí</div>
-                            <div className={styles.preference}>Lựa chọn ưa thích của du khách đi theo nhóm</div>
-                            <div className={styles.price}>Từ US$5</div>
-                            <button className={styles.btn_check}>Xem chỗ trống &#10095;</button>
-                        </div>
-                    </div>
-                    <div className={styles.load_more_container}>
-                        <p>Bạn đã xem 120 trong số 1103 địa điểm tham quan</p>
-                        <button className={styles.load_more_button}>Hiển thị thêm</button>
-                    </div> */}
                 </div>
             </section>
-            {/* <Footer /> */}
         </div>
     );
 };

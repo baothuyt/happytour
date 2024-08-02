@@ -91,7 +91,7 @@ const HomePages = () => {
                                         {(renderRatingStars(el.totalRatings).map(star => star))}
                                        
                                         <p>{el.description}</p>
-                                        <Link to={`/${el.category?.toLowerCase()}/${el._id}/${el.name}`}>
+                                        <Link to={`/${el.category?.name?.toLowerCase()}/${el._id}/${el.name}`}>
                                             <button>Đặt Tour</button>
                                         </Link>
                                     </div>
@@ -325,7 +325,7 @@ const HomePages = () => {
                         {categories?.map((el, index) => (
                             <SwiperSlide key={createSlug(el.name)} className='swiper_container ' >
 
-                                <NavLink to={createSlug(el.name)} href="#the-weeknd" className={styles.event}>
+                                <NavLink to={el.name} href="#the-weeknd" className={styles.event}>
                                     <div className={styles.event__image}>
                                         <img src={images[index % images.length]} alt="The Weeknd" className={styles.zoomImage} />
                                         <div className={`${styles.event__indicator} ${styles.event__date}`}>

@@ -17,10 +17,14 @@ export default {
       },
     },
     animation: {
-      "slide-right": "slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;"
+      "slide-right":
+        "slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;",
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    // require("@tailwindcss/forms"),
+    require("daisyui")
+  ],
   daisyui: {
     themes: false,
     darkTheme: "light",

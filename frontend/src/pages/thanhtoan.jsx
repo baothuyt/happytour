@@ -13,8 +13,8 @@ const Thanhtoan = () => {
     tourId,
     tripId: '',
     adult: 1,
-    children: '',
-    infant: '',
+    children: 0,  // Khởi tạo giá trị mặc định
+    infant: 0,  // Khởi tạo giá trị mặc định
   });
 
   const fetchTours = async () => {
@@ -31,8 +31,8 @@ const Thanhtoan = () => {
       tourId,
       tripId: '',
       adult: 1,
-      children: '',
-      infant: '',
+      children: 0,  // Reset về giá trị mặc định
+      infant: 0,  // Reset về giá trị mặc định
     })
   }
 
@@ -53,14 +53,14 @@ const Thanhtoan = () => {
               <div className="form-group row">
                 <label className="col-sm-2 col-form-label">Tour yêu cầu</label>
                 <div className="col-sm-10">
-                  <input type="text" readOnly className="form-control-plaintext" value={tours?.name} />
+                  <input type="text" readOnly className="form-control-plaintext" value={tours?.name || ''} />
                 </div>
               </div>
               <div className="form-group row">
                 <label className="col-sm-2 col-form-label">Khách sạn</label>
                 <div className="col-sm-10 flex">
                   {tours?.destination?.map(el => (
-                    <span className='px-2'>{el.hotel}</span>
+                    <span className='px-2' key={el._id} >{el.hotel}</span>
                   ))}
                 </div>
               </div>
