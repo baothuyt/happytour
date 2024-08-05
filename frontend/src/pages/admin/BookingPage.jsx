@@ -1,65 +1,116 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { apiGetBookings } from '../../apis/booking'; // Đảm bảo đường dẫn đúng
+import moment from 'moment';
+import InputField from '../../components/InputField';
 
 const BookingPage = () => {
-  return (
-    <>
-    <div className="flex justify-between m-5">
-        <h1 className="text-2xl font-bold">Booking List</h1>
-        
-        <div className="flex">
-          <label className="input input-bordered flex items-center gap-2 rounded-full w-60">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="w-4 h-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input type="text" className="grow" placeholder="Search" />
-          </label>
-        </div>
-      </div>
-    <div>
-      <div className="overflow-x-auto bg-white mx-2">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>People</th>
-              <th>Total price</th>
-              <th>Payment</th>
-              <th>Day create</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>id</th>
-              <td>5</td>
-              <td>5000</td>
-              <td>payment</td>
-              <td>10/10/239</td>
-              <td>active</td>
-              <td>
-                <button className="btn btn-xs">
-                  xóa
-                </button>
-              </td>
-            </tr>
+    const [bookingTours, setBookingTours] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [queries, setQueries] = useState({
+      q: ''
+    });
 
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </>
-  )
-}
+    // Hàm gọi API và cập nhật dữ liệu
+    const fetchBookingTours = async () => {
+        try {
+            const response = await apiGetBookings();
+            if (response.success) {
+                setBookingTours(response.bookingTours); // Giả sử response chứa mảng dữ liệu cần hiển thị
+            } else {
+                setError('Không thể tìm nạp các chuyến tham quan đã đặt trước');
+            }
+        } catch (err) {
+            setError('Đã xảy ra lỗi khi lấy dữ liệu!');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-export default BookingPage
+    // Gọi hàm fetchBookingTours khi component được render
+    useEffect(() => {
+        fetchBookingTours();
+    }, []);
+
+    return (
+        <>
+            <div className="flex justify-between m-5">
+                <h1 className="text-2xl font-bold my-4">Booking List</h1>
+                <div className="flex">
+                  <InputField
+                    nameKey="q"
+                    value={queries.q}
+                    setValue={setQueries}
+                    placeholder="Search tour..."
+                    isHideLabel
+                  />
+                </div>
+                {loading && <p>Loading...</p>}
+                {error && <p className="text-red-600">{error}</p>}
+                {!loading && !error && (
+                    <div className="overflow-x-auto bg-white mx-2">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <h1>Tour Information</h1>
+                                        <th>#</th>
+                                        <th>Tour ID</th>
+                                        <th>Tour Name</th>
+                                        <th>Tour Price</th>
+                                        <th>Status</th>
+                                    <h2>Order By</h2>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Mobile</th>
+                                    <h2>Details</h2>
+                                        <th>Adults</th>
+                                        <th>Children</th>
+                                        <th>Infants</th>
+                                        <th>Total</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
+                                        <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bookingTours.map((booking, idx) => (
+                                    <tr key={booking._id}>
+                                        <td>{idx + 1}</td>
+                                        <td>{booking.tour.name}</td>
+                                        <td>{booking.tour.price.toLocaleString()} VND</td>
+                                        <td>{booking.status}</td>
+                                        <td>{booking.orderBY.firstname}</td>
+                                        <td>{booking.orderBY.lastname}</td>
+                                        <td>{booking.orderBY.mobile}</td>
+                                        <td>{booking.adult}</td>
+                                        <td>{booking.children}</td>
+                                        <td>{booking.infant}</td>
+                                        <td>{booking.total.toLocaleString()} VND</td>
+                                        <td>{moment(booking.createdAt).format('DD/MM/YYYY')}</td>
+                                        <td>{moment(booking.updatedAt).format('DD/MM/YYYY')}</td>
+                                        <td>
+                                            <span
+                                                onClick={() => console.log('Edit', booking)}
+                                                className="px-2 text-orange-600 hover:underline cursor-pointer"
+                                            >
+                                                Edit
+                                            </span>
+                                            <span
+                                                onClick={() => console.log('Delete', booking)}
+                                                className="px-2 text-red-600 hover:underline cursor-pointer"
+                                            >
+                                                Delete
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+        </>
+    );
+};
+
+export default BookingPage;
