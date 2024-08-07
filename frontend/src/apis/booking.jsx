@@ -6,11 +6,16 @@ export const apiCreateBooking = (data) => axios({
     data
 })
 
+export const apiGetBookings = () => axios({
+    url: '/api/booking',
+    method: 'get',
+})
+
 export const apiGetBooking = (tourId) => axios({
     url: '/api/booking/' +tourId,
     method: 'get'
 })
-export const apiGetBookings = async (params) => {
+export const apiGetBookingTour = async (params) => {
     try {
         const response = await axios.get('/api/booking', { params });
         return response.data; // Giả sử API trả về dữ liệu dưới dạng JSON

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { apiGetBookings } from '../../apis/booking'; // Đảm bảo đường dẫn đúng
+import { apiGetBookingTour } from '../../apis/booking'; // Đảm bảo đường dẫn đúng
 import moment from 'moment';
 import InputField from '../../components/InputField';
 
@@ -14,7 +14,7 @@ const BookingPage = () => {
     // Hàm gọi API và cập nhật dữ liệu
     const fetchBookingTours = async () => {
         try {
-            const response = await apiGetBookings();
+            const response = await apiGetBookingTour();
             if (response.success) {
                 setBookingTours(response.bookingTours); // Giả sử response chứa mảng dữ liệu cần hiển thị
             } else {
