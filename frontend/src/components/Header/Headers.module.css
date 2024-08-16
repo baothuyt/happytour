@@ -14,11 +14,12 @@ header{
 .header_top i{
     text-decoration: none;
     position: fixed;
+    right: 0;
     margin: 12px;
     font-size: 35px;
     color: var(--main-color);
     cursor: pointer;
-    z-index: 1;
+    z-index: 3;
 }
 .header_top ul{
     text-decoration: none;
@@ -26,7 +27,7 @@ header{
     right: 0;
     width: 300px;
     height: 100vh;
-    padding: 150px 0 0 50px;
+    padding: 100px 0 0 50px;
     display: none;
     opacity: 0;
     z-index: 2;

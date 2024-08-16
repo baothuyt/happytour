@@ -11,6 +11,7 @@ import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import SearchItem from '../../components/SearchItem';
 import InputSelect from '../../components/InputSelect';
 import { sorts } from '../../ultils/constant';
+import Pagination from '../../components/Pagination/Pagination';
 
 const Search = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Search = () => {
 
     const fetchToursByCategory = async (queries) => {
         const response = await apiGetTours(queries)
-        if (response.success) setTours(response.toursData)
+        if (response.success) setTours(response)
     }
     useEffect(() => {
         let param = []
@@ -39,13 +40,16 @@ const Search = () => {
                 ]
             }
             delete queries.price
+        } else {
+            if (queries.from) queries.price = { gte: queries.from }
+            if (queries.to) queries.price = { lte: queries.to }
         }
-        if (queries.from) queries.price = { gte: queries.from }
-        if (queries.to) queries.price = { lte: queries.to }
+
         delete queries.to
         delete queries.from
 
         fetchToursByCategory({ ...priceQuery, ...queries })
+        window.scrollTo(0, 160)
     }, [params])
     const changeActiveFilter = useCallback((name) => {
         if (activeClick === name) setActiveClick(null)
@@ -56,10 +60,12 @@ const Search = () => {
     }, [sort])
 
     useEffect(() => {
-        navigate({
-            pathname: `/${category}`,
-            search: createSearchParams({ sort }).toString()
-        })
+        if (sort) {
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({ sort }).toString()
+            })
+        }
     }, [sort])
     return (
         <div>
@@ -99,7 +105,7 @@ const Search = () => {
             </section>
             <section className={styles.results_section}>
                 <div className={styles.container}>
-                    {tours?.map(el => (
+                    {tours?.toursData?.map(el => (
                         <TourCard
                             key={el._id}
                             _id={el._id}
@@ -114,6 +120,11 @@ const Search = () => {
                     ))}
                 </div>
             </section>
+            <div className='w-[1000px] m-auto my-4 flex justify-end'>
+                <Pagination
+                    totalCount={tours?.counts}
+                />
+            </div>
         </div>
     );
 };

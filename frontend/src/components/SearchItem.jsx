@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import { AiOutlineDown } from 'react-icons/ai'
 import { tourType } from '../ultils/constant'
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
+import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { apiGetTours } from '../apis'
 import useDebounce from '../hooks/useDebounce'
 
@@ -9,6 +9,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
     const navigate = useNavigate()
     const { category } = useParams()
     const [selected, setSelected] = useState([])
+    const [params] = useSearchParams()
     const [price, setPrice] = useState({
         from: '',
         to: ''
@@ -26,16 +27,18 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
     }
 
     useEffect(() => {
+        let param = []
+        for (let i of params.entries()) param.push(i)
+        const queries = {}
+        for (let i of param) queries[i[0]] = i[1]
         if (selected.length > 0) {
-            navigate({
-                pathname: `/${category}`,
-                search: createSearchParams({
-                    tourType: selected.join(',')
-                }).toString()
-            })
-        } else {
-            navigate(`/${category}`)
-        }
+            queries.tourType = selected.join(',')
+            queries.page = 1
+        } else delete queries.tourType
+        navigate({
+            pathname: `/${category}`,
+            search: createSearchParams(queries).toString()
+        })
     }, [selected])
 
     useEffect(() => {
@@ -49,13 +52,18 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
             alert('Giá khởi điểm không được cao hơn giá kết thúc')
             return;
         }
-        const data = {}
-        if (Number(price.from) > 0) data.from = price.from
-        if (Number(price.to) > 0) data.to = price.to
-
+        let param = []
+        for (let i of params.entries()) param.push(i)
+        const queries = {}
+        for (let i of param) queries[i[0]] = i[1]
+        if (Number(price.from) > 0) queries.from = price.from
+        else delete queries.from
+        if (Number(price.to) > 0) queries.to = price.to
+        else delete queries.to
+        queries.page = 1
         navigate({
             pathname: `/${category}`,
-            search: createSearchParams(data).toString()
+            search: createSearchParams(queries).toString()
         })
     }, [deboucePriceFrom, deboucePriceTo])
 
@@ -100,7 +108,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
                         <span
                             onClick={e => {
                                 e.stopPropagation()
-                                setPrice({ from: '', to: '' }) 
+                                setPrice({ from: '', to: '' })
                                 changeActiveFilter(null)
                             }}
                             className='underline cursor-pointer hover:text-[#5dbc5d]'>Reset</span>

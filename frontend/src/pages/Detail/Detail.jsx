@@ -1,14 +1,22 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import styles from './Detail.module.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { apiGetTour } from '../../apis/tour';
-import { useEffect } from 'react';
+import { apiGetTour, apiRatings } from '../../apis/tour';
+import { useCallback, useEffect } from 'react';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import { useState } from 'react';
-import { formatMoney, formatDate } from '../../ultils/helpers';
+import { formatMoney, formatDate, renderStarFromNumber } from '../../ultils/helpers';
+import VoteBar from '../../components/VoteBar';
+import Button from '../../components/Button';
+import VoteOption from '../../components/VoteOption';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../../store/app/appSlice';
+import Swal from 'sweetalert2'
+import Comment from '../../components/Comment';
+
 
 const renderRatingStars = (totalRatings) => {
     const stars = [];
@@ -23,9 +31,12 @@ const renderRatingStars = (totalRatings) => {
 };
 
 const Detail = () => {
-
     const { tourId, name, category } = useParams()
     const [tour, setTour] = useState(null)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { isLoggedIn } = useSelector(state => state.user)
+    const [update, setUpdate] = useState(false)
 
     const fetchTours = async () => {
         const response = await apiGetTour(tourId)
@@ -33,7 +44,43 @@ const Detail = () => {
     }
     useEffect(() => {
         if (tourId) fetchTours()
-    }, [tourId])
+    }, [tourId, update])
+    const rerender = useCallback(() => {
+        setUpdate(!update)
+    }, [update])
+
+    // function to get data from VoteOption Component
+    const handleSubmitVoteOption = async ({ comment, score }) => {
+        if (!comment || !tour._id || !score) {
+            alert('Please vote when click submit')
+            return
+        }
+        await apiRatings({ star: score, comment, tid: tour._id, updatedAt: Date.now() })
+        dispatch(showModal({ isShowModal: false, modalChildren: null }))
+        rerender()
+    }
+
+    // check when user login , then allow to vote
+    const handleVoteNow = () => {
+        if (!isLoggedIn) {
+            Swal.fire({
+                text: 'Login to vote',
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Go login',
+                title: 'Oops!',
+                showCancelButton: true
+            }).then((rs) => {
+                if (rs.isConfirmed) navigate('/dangnhap')
+            })
+        } else {
+            dispatch(showModal({
+                isShowModal: true,
+                modalChildren: <VoteOption nameProduct={tour?.name}
+                    handleSubmitVoteOption={handleSubmitVoteOption}
+                />
+            }))
+        }
+    }
     return (
         <div>
             <section className={styles.nice_place}>
@@ -258,10 +305,10 @@ const Detail = () => {
                         </div>
                         <div className={styles.notes_section}>
                             <h3>MỘT SỐ LƯU Ý KHÁC:</h3>
-                                <ul>
-                                    <li>Đón các chuyến bay hạ cánh từ 09h00 – 11h30 và tiễn các chuyến bay cất cánh từ 15h00 – 16h30.</li>
-                                    <li>Các điểm tham quan trong chương trình có thể thay thứ tự để phù hợp với tình hình thực tế.</li>
-                                </ul>
+                            <ul>
+                                <li>Đón các chuyến bay hạ cánh từ 09h00 – 11h30 và tiễn các chuyến bay cất cánh từ 15h00 – 16h30.</li>
+                                <li>Các điểm tham quan trong chương trình có thể thay thứ tự để phù hợp với tình hình thực tế.</li>
+                            </ul>
                             <p>
                                 ** Trong trường hợp khách quan như: khủng bố, thiên tai, ... hoặc do có sự cố, sự thay đổi lịch trình
                                 của các phương tiện vận chuyển công cộng như: máy bay, tàu hỏa, ... thì công ty sẽ giữ quyền thay
@@ -281,10 +328,50 @@ const Detail = () => {
                                 <Link to={`/thanhtoan/${tourId}`} className={styles.btn_text}>ĐẶT NGAY</Link>
                             </div>
                         </div>
+                        <div className='w-full mt-4 border p-4'>
+                            <div className="flex flex-col p-4">
+                                <div className='flex'>
+                                    <div className="basis-3/5 border flex flex-col items-center justify-center">
+                                        <span className='font-semibold text-3xl'>{`${Math.round(tour?.totalRatings)}/5`}</span>
+                                        <span className='flex items-center gap-1'>{renderStarFromNumber(tour?.totalRatings)?.map((el, index) => (
+                                            <span key={index}>{el}</span>
+                                        ))}</span>
+                                        <span className='text-sm'>{`${tour?.ratings?.length} reviewers and commentors`}</span>
+                                    </div>
+                                    <div className="basis-full flex flex-col gap-2 border p-4">
+                                        {Array.from(Array(5).keys()).reverse().map(el => (
+                                            <VoteBar
+                                                key={el}
+                                                number={el + 1}
+                                                ratingTotal={tour?.ratings?.length}
+                                                ratingCount={tour?.ratings?.filter(i => i.star === el + 1)?.length}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className='p-4 flex items-center justify-center text-sm flex-col gap-2'>
+                                    <span>Do you want to rate this Tour?</span>
+                                    <Button
+                                        name='Rate now!'
+                                        handleOnClick={handleVoteNow}
+                                    ></Button>
+                                </div>
+                                <div className='flex flex-col gap-4'>
+                                    {tour?.ratings?.map(el => (
+                                        <Comment
+                                            key={el._id}
+                                            star={el.star}
+                                            updatedAt={el.updatedAt}
+                                            comment={el.comment}
+                                            name={`${el.postedBy?.lastname} ${el.postedBy?.firstname}`}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
-
         </div>
     );
 };

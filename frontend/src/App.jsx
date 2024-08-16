@@ -20,20 +20,23 @@ import CreateTour from "./pages/admin/CreateTours";
 import TourActivePage from "./pages/admin/TourActivePage";
 import CommentPage from "./pages/admin/CommentPage";
 import FinalRegister from "./pages/public/FinalRegister";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getCategories } from "./store/app/actions";
 import ResetPassword from "./pages/public/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import  Modal  from './components/Modal'
 
 function App() {
   const dispatch = useDispatch();
+  const { isShowModal, modalChildren } = useSelector(state => state.app)
   useEffect(() => {
     dispatch(getCategories())
   }, [])
   return (
-  <>
+    <div className="relative">
+    {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
         <Route path="/" element={<Layout><HomePages /></Layout>} />
         <Route path="/home" element={<Layout><HomePages /></Layout>} />
@@ -59,20 +62,20 @@ function App() {
         </Route>
       </Routes>
       <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
       />
       {/* Same as */}
       <ToastContainer />
-  </>
+    </div>
   );
 }
 

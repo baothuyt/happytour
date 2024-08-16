@@ -7,7 +7,6 @@ header {
 .navbar {
     display: flex;
     justify-content: space-between;
-    align-items: left;
     background-color: #5dbc5d;
     padding: 10px 20px;
     color: white;
@@ -17,12 +16,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 30em;
+    padding-left: 25em;
 }
 
 .navbar_left img.logo {
     height: 89px;
-    left: 270px;
+    left: 160px;
     object-fit: cover;
     position: absolute;
     top: 0;
@@ -61,7 +60,8 @@ header {
 .navbar_right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    padding-right: 10em;
+    gap: 20px;
 }
 
 .navbar_right .flag {
@@ -77,9 +77,12 @@ header {
     cursor: pointer;
     text-align: center;
     font-weight: bolder;
+    text-decoration: none;
 }
 
 .btn:hover {
     background-color: #007bff;
     color: white;
+    transition: background-color 0.3s;
+
 }

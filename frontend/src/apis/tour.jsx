@@ -7,13 +7,19 @@ export const apiGetTours = (params) => axios({
 })
 
 export const apiGetTour = (tourId) => axios({
-    url: '/api/tour/' +tourId,
+    url: '/api/tour/' + tourId,
     method: 'get'
+})
+
+export const apiRatings = (data) => axios({
+    url: '/api/tour/ratings',
+    method: 'put',
+    data
 })
 
 //admin
 export const apiCreateTour = (data) => axios({
-    url: '/api/tour/' ,
+    url: '/api/tour/',
     method: 'post',
     data
 })

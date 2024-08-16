@@ -3,7 +3,7 @@ import storage from 'redux-persist/lib/storage'
 import appSlice from './app/appSlice';
 import tourSlice from './tours/tourSlice';
 import userSlice from './users/userSlice'
-import { persistReducer, persistStore } from 'redux-persist'
+import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 
 // use redux persist to save data on localStage
 const commonConfig = {
@@ -21,10 +21,11 @@ export const store = configureStore({
     tours: tourSlice,
     user: persistReducer(userConfig, userSlice)
   },
-  // Thêm middleware nếu cần
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Tắt kiểm tra tuần tự hóa nếu cần (sử dụng cẩn thận)
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
 });
 

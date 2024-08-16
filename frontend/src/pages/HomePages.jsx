@@ -24,7 +24,8 @@ const settings = {
 
 const renderRatingStars = (totalRatings) => {
     const stars = [];
-    const maxStars = 5; // Số sao tối đa
+    const maxStars = 5;
+    totalRatings = Math.round(totalRatings)
     for (let i = 0; i < totalRatings; i++) {
         stars.push(<i key={i} className="fas fa-solid fa-star"></i>);
     }
