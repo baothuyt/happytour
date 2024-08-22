@@ -47,7 +47,7 @@ const Headers = () => {
 
         <ul className={`${isMenuActive ? styles.active : ''}`}>
           <li style={{ '--x': 1 }}><Link to="/">Trang chủ</Link></li>
-          <li style={{ '--x': 2 }}><Link to="/locations">Địa điểm</Link></li>
+          <li style={{ '--x': 2 }}><Link to="/tours">Địa điểm</Link></li>
           <li style={{ '--x': 3 }}><Link to="/about">Về chúng tôi</Link></li>
           <li style={{ '--x': 4 }}><Link to="/blog">Blog</Link></li>
           <li style={{ '--x': 5 }}><Link to="/contact">Liên hệ</Link></li>

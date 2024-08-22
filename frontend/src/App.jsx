@@ -27,6 +27,7 @@ import ResetPassword from "./pages/public/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import  Modal  from './components/Modal'
+import Checkout from "./pages/member/Checkout";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
         <Route path="/:category/:tourId/:name" element={<Layout2><Detail /></Layout2>} />
         <Route path="/dangnhap" element={<Layout1><Dangnhap /></Layout1>} />
         <Route path="/thanhtoan/:tourId" element={<Layout2><Thanhtoan /></Layout2>} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/bookinghistory" element={<Layout2><BookingHistory /></Layout2>} />
         <Route path="/thaydoi" element={<Layout1><ThaydoiThongtinCaNhan /></Layout1>} />
         <Route path="/:category" element={<Layout2><Searchtour /></Layout2>} />

@@ -20,16 +20,18 @@ const Search = () => {
     const [activeClick, setActiveClick] = useState(null)
     const [sort, setSort] = useState('')
     const [params] = useSearchParams()
-
+console.log(category)
     const fetchToursByCategory = async (queries) => {
+        if(category && category !== 'tours') queries.category = category
         const response = await apiGetTours(queries)
         if (response.success) setTours(response)
     }
     useEffect(() => {
-        let param = []
-        for (let i of params.entries()) param.push(i)
-        const queries = {}
-        for (let i of param) queries[i[0]] = i[1]
+        // let param = []
+        // for (let i of params.entries()) param.push(i)
+        // const queries = {}
+        // for (let i of param) queries[i[0]] = i[1]
+        const queries =Object.fromEntries([...params])
 
         let priceQuery = {}
         if (queries.from && queries.to) {

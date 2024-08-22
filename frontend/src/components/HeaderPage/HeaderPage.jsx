@@ -37,7 +37,7 @@ const HeaderPage = () => {
       </div>
       <nav className={styles.navbar_center}>
         <Link to="/" className={styles.nav_item}><i className="fas fa-home"></i> Trang chủ</Link>
-        <Link to="/locations" className={styles.nav_item}><i className="fas fa-map-marker-alt"></i> Địa điểm</Link>
+        <Link to="/tours" className={styles.nav_item}><i className="fas fa-map-marker-alt"></i> Địa điểm</Link>
         <a href="#" className={styles.nav_item}><i className="fas fa-users"></i> Về chúng tôi</a>
         <Link to="/blog" className={styles.nav_item}><i className="fas fa-camera"></i> Blog</Link>
         <a href="#" className={styles.nav_item}><i className="fas fa-phone"></i> Liên hệ</a>

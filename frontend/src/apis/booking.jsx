@@ -24,3 +24,9 @@ export const apiGetBookingTour = async (params) => {
         throw error; // Đẩy lỗi ra để xử lý ở nơi gọi API
     }
 };
+
+export const apiUpdateStatusBooking = (bookingId,data) => axios({
+    url: '/api/booking/status/' + bookingId,
+    method: 'put',
+    data
+})

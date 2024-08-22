@@ -1,20 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
-import { apiGetTour, apiCreateBooking } from '../apis';
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { apiGetTour } from '../apis';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import { totalBooking, formatMoney, formatDate } from '../ultils/helpers';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 
 const Thanhtoan = () => {
+  const { current } = useSelector(state => state.user)
+  const navigate = useNavigate()
   const { tourId } = useParams();
   const [tours, setTour] = useState(null);
   const [payload, setPayload] = useState({
     tourId,
     tripId: '',
     adult: 1,
-    children: 0,  // Khởi tạo giá trị mặc định
-    infant: 0,  // Khởi tạo giá trị mặc định
+    children: 0,
+    infant: 0,
   });
 
   const fetchTours = async () => {
@@ -31,16 +34,30 @@ const Thanhtoan = () => {
       tourId,
       tripId: '',
       adult: 1,
-      children: 0,  // Reset về giá trị mặc định
-      infant: 0,  // Reset về giá trị mặc định
+      children: 0,
+      infant: 0,
     })
   }
 
   const handleBooking = async () => {
-    const response = await apiCreateBooking(payload);
-    if (response.success) {
-      Swal.fire('Congratulations!', "You have successfully booked your tour", 'success').then(() => { resetPayload() })
-    } else Swal.fire('Oops!', response.response, 'error')
+    if (!current?.address) {
+      return Swal.fire({
+        icon:'info',
+        title: 'Almost!',
+        text: 'Please update your address before checkout',
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Go to update',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) navigate('/thaydoi')
+      })
+    }else if (payload.tripId && current?.address) {
+      const selectedTrip = tours?.trip?.find(el => el._id === payload.tripId);
+      navigate('/checkout', { state: { payload, tourName: tours?.name, tourPrice: tours?.price, vehicle: selectedTrip.vehicel, licensePlate: selectedTrip.licensePlate } });
+    } else {
+      Swal.fire('Oops!', 'Vui lòng chọn chuyến đi trước khi tiếp tục.', 'warning');
+    }
   };
 
   return (
@@ -83,12 +100,12 @@ const Thanhtoan = () => {
             <div className="card-header bg-success text-white">CHI TIẾT TOUR</div>
             <div className="card-body">
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Chọn chuyến đi</label>
+                <label className="col-sm-3 col-form-label">
+                  Chọn chuyến đi <span className="text-danger">*</span>
+                </label>
                 <div className="col-sm-9">
                   <select
                     className="form-control"
-                    name=""
-                    id=""
                     value={payload.tripId}
                     onChange={(e) => setPayload({ ...payload, tripId: e.target.value })}
                   >
@@ -100,7 +117,9 @@ const Thanhtoan = () => {
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Người lớn</label>
+                <label className="col-sm-3 col-form-label">
+                  Người lớn <span className="text-danger">*</span>
+                </label>
                 <div className="col-sm-3">
                   <input
                     type="number"
@@ -122,6 +141,7 @@ const Thanhtoan = () => {
                     type="number"
                     className="form-control"
                     value={payload.children}
+                    min={0}
                     onChange={(e) => setPayload({ ...payload, children: e.target.value })}
                   />
                 </div>
@@ -137,6 +157,7 @@ const Thanhtoan = () => {
                     type="number"
                     className="form-control"
                     value={payload.infant}
+                    min={0}
                     onChange={(e) => setPayload({ ...payload, infant: e.target.value })}
                   />
                 </div>
@@ -148,14 +169,17 @@ const Thanhtoan = () => {
               <div className="form-group row">
                 <label className="col-sm-3 col-form-label">Tổng giá</label>
                 <div className="col-sm-9">
-                  <input
-                    type="text"
-                    readOnly
-                    className="form-control-plaintext"
-                    value={totalBooking((tours?.price || 0), Number(payload.adult), Number(payload.children))}
-                  />
+                  <div className="total-price-box">
+                    <input
+                      type="text"
+                      readOnly
+                      className="form-control-plaintext total-price"
+                      value={`${formatMoney(totalBooking((tours?.price || 0), Number(payload.adult), Number(payload.children)))} VND`}
+                    />
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -177,7 +201,7 @@ const Thanhtoan = () => {
         </div>
       </div>
       <div className='row'>
-        <div className="col-12 d-flex justify-content-center">
+        <div className="col-12 d-flex justify-content-center pb-3">
           <Button
             name={'Xác nhận thanh toán'}
             handleOnClick={handleBooking}
