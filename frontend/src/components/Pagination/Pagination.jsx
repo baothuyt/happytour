@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 
 const Pagination = ({totalCount}) => {
   const [params] = useSearchParams()
-  const pagination = usePagination(totalCount, 2)
+  const pagination = usePagination(totalCount, +params.get('page') || 1)
   const range = () => {
     const currentPage = +params.get('page')
    const pageSize = +import.meta.env.VITE_REACT_APP_PRODUCT_LIMIT
@@ -16,7 +16,7 @@ const Pagination = ({totalCount}) => {
   }
   return (
     <div className='flex w-full justify-between items-center'>
-      {!+params.get('page') && <span className='text-sm italic'>{`Show tours 1 - ${+import.meta.env.VITE_REACT_APP_PRODUCT_LIMIT || 3} of ${totalCount}`}</span>}
+      {!+params.get('page') && <span className='text-sm italic'>{`Show tours 1 - ${Math.min(+import.meta.env.VITE_REACT_APP_PRODUCT_LIMIT,totalCount)} of ${totalCount}`}</span>}
       {+params.get('page') && <span className='text-sm italic'>{`Show tours ${range()} of ${totalCount}`}</span>}
       
       <div className='flex items-center'>

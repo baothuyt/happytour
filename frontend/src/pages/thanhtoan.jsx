@@ -1,15 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { apiGetTour } from '../apis';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import { totalBooking, formatMoney, formatDate } from '../ultils/helpers';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
+import withBaseComponent from '../hocs/withBaseComponent';
 
-const Thanhtoan = () => {
+const Thanhtoan = ({navigate, location}) => {
   const { current } = useSelector(state => state.user)
-  const navigate = useNavigate()
   const { tourId } = useParams();
   const [tours, setTour] = useState(null);
   const [payload, setPayload] = useState({
@@ -19,7 +19,7 @@ const Thanhtoan = () => {
     children: 0,
     infant: 0,
   });
-
+  const reBookingData = location.state?.reBookingData;
   const fetchTours = async () => {
     const response = await apiGetTour(tourId);
     if (response.success) setTour(response.tourData);
@@ -27,17 +27,11 @@ const Thanhtoan = () => {
 
   useEffect(() => {
     if (tourId) fetchTours();
-  }, [tourId]);
-
-  const resetPayload = () => {
-    setPayload({
-      tourId,
-      tripId: '',
-      adult: 1,
-      children: 0,
-      infant: 0,
-    })
-  }
+    if (reBookingData) {
+      const {adult,children,infant} = reBookingData
+      setPayload({...payload,adult,children,infant});
+    }
+  }, [tourId,reBookingData]);
 
   const handleBooking = async () => {
     if (!current?.address) {
@@ -212,4 +206,4 @@ const Thanhtoan = () => {
   );
 };
 
-export default Thanhtoan;
+export default withBaseComponent(Thanhtoan);

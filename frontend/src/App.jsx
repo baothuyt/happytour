@@ -7,7 +7,7 @@ import Dangnhap from "./pages/dangnhap"
 import Searchtour from "./pages/Searchtour/Searchtour";
 import Thanhtoan from "./pages/thanhtoan";
 import ThaydoiThongtinCaNhan from "./pages/changett";
-import BookingHistory from "./pages/bookinghistory";
+import BookingHistory from "./pages/member/bookinghistory";
 import Detail from "./pages/Detail/Detail";
 import BlogList from "./pages/Blog";
 import AdminLayout from "./layouts/AdminLayout";

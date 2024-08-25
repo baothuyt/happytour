@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { createSlug } from '../ultils/helpers'
 import { apiGetTours } from '../apis/tour';
 import { useState, useEffect } from 'react';
@@ -46,7 +46,12 @@ const HomePages = () => {
     const [bestSellers, setBestSellers] = useState(null)
     const dispath = useDispatch()
     const {newTours} = useSelector(state => state.tours)
-    
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    // Handle search ridirect to Searchtour Component
+    const handleSearch = () => {
+      navigate(`/tours?name=${encodeURIComponent(searchTerm)}`);
+    };
     // get data of user's reducer in store
     const {isLoggedIn, current} =useSelector(state => state.user)
     // Get categories from store
@@ -65,16 +70,8 @@ const HomePages = () => {
             <Headers />
             <section>
                 <div className={styles.booking_search_box}>
-                    <input type="text" placeholder="Bạn muốn đi đâu?" />
-                    <input type="date" placeholder="Check-in" />
-                    <input type="date" placeholder="Check-out" />
-                    <select>
-                        <option value="1">1 Người</option>
-                        <option value="2">2 Người</option>
-                        <option value="3">3 Người</option>
-                        <option value="4">4 Người</option>
-                    </select>
-                    <button>Tìm kiếm</button>
+                    <input type="text" placeholder="Bạn muốn đi đâu?" onChange={(e) => setSearchTerm(e.target.value)} />
+                    <button onClick={handleSearch}>Tìm kiếm</button>
                 </div>
             </section>
             <section className={styles.nice_place}>

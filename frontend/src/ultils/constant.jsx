@@ -21,12 +21,12 @@ export const blockstatus = [
 ]
 
 export const tourType = [
-    'couple',  // Tour lãng mạn dành cho cặp đôi
-    'adventure', // Tour mạo hiểm
-    'cultural', // Tour khám phá văn hóa
-    'family', // Tour vui chơi gia đình
-    'luxury', // Tour sang trọng
-    'budget' // Tour tiết kiệm
+    'couple',  
+    'adventure', 
+    'cultural', 
+    'family', 
+    'luxury',
+    'budget'
 ];
 
 export const sorts = [
@@ -89,3 +89,14 @@ export const voteOptions = [
         text: 'Perfect'
     },
 ];
+
+export const statusBookings =[
+    {
+        label: 'Cancelled',
+        value: 'Cancelled'
+    },
+    {
+        label: 'Success',
+        value: 'Success'
+    },
+]

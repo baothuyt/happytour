@@ -30,3 +30,9 @@ export const apiUpdateStatusBooking = (bookingId,data) => axios({
     method: 'put',
     data
 })
+
+export const apiGetUserBookings = (params) => axios({
+    url: '/api/booking/current/',
+    method: 'get',
+    params
+})

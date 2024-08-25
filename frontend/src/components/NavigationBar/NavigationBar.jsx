@@ -1,4 +1,4 @@
-import React, { useState,Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import Logo from './../../assets/Logo.png';
 import { MdOutlineDashboard } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
@@ -94,7 +94,7 @@ const NavigationBar = () => {
             className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"
                 }`}>
             <div className='flex space-x-3 items-center'>
-                <img src={Logo} alt="logo images"className='w-36 h-auto' />
+                <img src={Logo} alt="logo images" className='w-36 h-auto' />
             </div>
 
             <div
@@ -105,7 +105,7 @@ const NavigationBar = () => {
 
             <div className='mt-10 flex flex-col space-y-8'>
                 {navLinks.map((item, index) => (
-                    <Link to={item.link} key={index} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? "bg-[#5DBC5D] text-white font-semibold" : ""}`}
+                    <Link to={item.link} key={index} className={`flex no-underline text-inherit space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? "bg-[#5DBC5D] text-white font-semibold" : ""}`}
                         onClick={() => setActiveNavIndex(index)}
                     >
                         <div className='text-2xl'>
@@ -114,7 +114,7 @@ const NavigationBar = () => {
                         <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
                     </Link>
                 ))}
-                
+
             </div>
         </motion.div>
     )

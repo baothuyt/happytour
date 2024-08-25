@@ -51,6 +51,10 @@ const Headers = () => {
           <li style={{ '--x': 3 }}><Link to="/about">Về chúng tôi</Link></li>
           <li style={{ '--x': 4 }}><Link to="/blog">Blog</Link></li>
           <li style={{ '--x': 5 }}><Link to="/contact">Liên hệ</Link></li>
+          <li style={{ '--x': 5 }}>
+          {isLoggedIn && current &&
+              <Link to="/bookinghistory">Lịch sử đặt vé</Link>}
+          </li>
           <li style={{ '--x': 6 }}>
             {isLoggedIn && current
               ? <div className='flex items-center gap-2 bg-[#5dbc5d] rounded-l-[24px] rounded-r-none'>
