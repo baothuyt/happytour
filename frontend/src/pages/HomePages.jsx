@@ -241,6 +241,40 @@ const HomePages = () => {
                 </div>
             </section>
 
+            <section id="contact" className={styles.contact}>
+                <div className={styles.container}>
+                    <h1>Danh sách tour</h1>
+                    <Swiper
+                        // install Swiper modules
+                        modules={[Navigation, Pagination, Scrollbar, A11y]}
+                        spaceBetween={50}
+                        slidesPerView={3}
+                        navigation
+
+
+                        onSlideChange={() => console.log('slide change')}
+
+                    >
+                        {categories?.map((el, index) => (
+                            <SwiperSlide key={createSlug(el.name)} className='swiper_container ' >
+
+                                <NavLink to={el.name} href="#the-weeknd" className={styles.event}>
+                                    <div className={styles.event__image}>
+                                        <img src={images[index % images.length]} alt="The Weeknd" className={styles.zoomImage} />
+                                        <div className={`${styles.event__indicator} ${styles.event__date}`}>
+                                            {el.name} <div className={styles.event__date__month}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </NavLink>
+                            </SwiperSlide>
+                        ))}
+
+                    </Swiper>
+
+                </div>
+            </section>
+
             <section id="review" className={styles.review}>
                 <div className={styles.container}>
                     <h1>Đánh giá trải nghiệm</h1>
@@ -304,42 +338,7 @@ const HomePages = () => {
                 </div>
 
             </section>
-
-
-            <section id="contact" className={styles.contact}>
-                <div className={styles.container}>
-                    <h1>Danh sách tour</h1>
-                    <Swiper
-                        // install Swiper modules
-                        modules={[Navigation, Pagination, Scrollbar, A11y]}
-                        spaceBetween={50}
-                        slidesPerView={3}
-                        navigation
-
-
-                        onSlideChange={() => console.log('slide change')}
-
-                    >
-                        {categories?.map((el, index) => (
-                            <SwiperSlide key={createSlug(el.name)} className='swiper_container ' >
-
-                                <NavLink to={el.name} href="#the-weeknd" className={styles.event}>
-                                    <div className={styles.event__image}>
-                                        <img src={images[index % images.length]} alt="The Weeknd" className={styles.zoomImage} />
-                                        <div className={`${styles.event__indicator} ${styles.event__date}`}>
-                                            {el.name} <div className={styles.event__date__month}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </NavLink>
-                            </SwiperSlide>
-                        ))}
-
-                    </Swiper>
-
-                </div>
-            </section>
-
+            <br />
         </div>
 
 
