@@ -1,64 +1,79 @@
-import React from 'react'
+import React from 'react';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DashboardPage = () => {
+  const data = {
+    labels: ['Tour Hà Nội', 'Tour Đà Nẵng', 'Tour Nha Trang', 'Tour Hà Giang', 'Tour Sapa', 'Tour Huế'],
+    datasets: [
+      {
+        label: 'Doanh Thu',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  
+  const data1 = {
+    labels: ['Tour Hà Nội', 'Tour Đà Nẵng', 'Tour Nha Trang', 'Tour Hà Giang', 'Tour Sapa', 'Tour Huế'],
+    datasets: [
+      {
+        label: 'Số Vé Đã Đặt',
+        data: [10, 15, 5, 8, 3, 7],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
-    <>
-    <div className="flex justify-between m-5">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex">
-          <label className="input input-bordered flex items-center gap-2 rounded-full w-60">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="w-4 h-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input type="text" className="grow" placeholder="Search" />
-          </label>
+    <div className="justify-between m-5">
+      <h1 className="text-2xl font-bold">Thống Kê</h1>
+      <div className="flex justify-around m-5">
+        <div style={{ width: '45%' }}>
+          <h3>Doanh Thu</h3>
+          <Pie data={data} />
+        </div>
+        <div style={{ width: '45%' }}>
+          <h3>Đặt Vé</h3>
+          <Pie data={data1} />
         </div>
       </div>
-    <div>
-      <div className="overflow-x-auto bg-white mx-2">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>People</th>
-              <th>Total price</th>
-              <th>Payment</th>
-              <th>Day create</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>id</th>
-              <td>5</td>
-              <td>5000</td>
-              <td>payment</td>
-              <td>10/10/239</td>
-              <td>active</td>
-              <td>
-                <button className="btn btn-xs">
-                  xóa
-                </button>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
     </div>
-  </>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;

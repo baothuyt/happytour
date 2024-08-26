@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { apiUpdateCurrent } from '../apis/user';
 import { getCurrent } from './../store/users/asyncActions'
-import avatar from '../assets/avatar-default.png';
+import avatar from './../assets/avatarDefault.png';
 import { toast } from 'react-toastify';
 
 const ThaydoiThongtinCaNhan = () => {
@@ -15,15 +15,20 @@ const ThaydoiThongtinCaNhan = () => {
     const dispatch = useDispatch()
     
     useEffect(() => {
-        reset({
-            firstname: current?.firstname,
-            lastname: current?.lastname,
-            email: current?.email,
-            mobile: current?.mobile,
-            avatar: current?.avatar,
-            address: current?.address,
-        })
-    }, [current])
+        const savedCurrent = JSON.parse(localStorage.getItem('current'));
+        if (savedCurrent) {
+            reset(savedCurrent);
+        } else {
+            dispatch(getCurrent());
+        }
+    }, []);
+    
+    useEffect(() => {
+        if (current) {
+            localStorage.setItem('current', JSON.stringify(current));
+        }
+    }, [current]);
+    
     
 
     const handleUpdateInfor = async (data) => {

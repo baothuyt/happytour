@@ -5,8 +5,9 @@ import { FiUsers } from "react-icons/fi";
 import { GrMapLocation } from "react-icons/gr";
 import { LuTicket } from "react-icons/lu";
 import { TbPlaneDeparture } from "react-icons/tb";
-import { FaRegCommentDots } from "react-icons/fa";
+import { FaRegCommentDots, FaRegUserCircle } from "react-icons/fa";
 import { LuLayers } from "react-icons/lu";
+import { RiLogoutCircleLine } from "react-icons/ri";
 import RightArrow from "./../../assets/icons/rightArrow.svg";
 import { motion } from "framer-motion";
 import { Link, NavLink } from 'react-router-dom';
@@ -78,6 +79,25 @@ const navLinks = [
     },
 ];
 
+const adminUser = [
+    {
+        name: "Tài Khoản",
+        icon: FaRegUserCircle,
+        link: "information",
+        type: 'SINGLE',
+        path: `/${path.INFOMATIONPAGE}`
+
+    },
+    {
+        name: "Đăng Xuất",
+        icon: RiLogoutCircleLine,
+        link: "dangxuat",
+        type: 'SINGLE',
+        path: `/${path.LOGOUT}`
+
+    },
+];
+
 const variants = {
     expanded: { width: "20%" },
     nonExpanded: { width: "10%" },
@@ -94,7 +114,7 @@ const NavigationBar = () => {
             className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"
                 }`}>
             <div className='flex space-x-3 items-center'>
-                <img src={Logo} alt="logo images" className='w-36 h-auto' />
+                <img src={Logo} alt="logo images"className='w-36 h-auto' />
             </div>
 
             <div
@@ -105,7 +125,7 @@ const NavigationBar = () => {
 
             <div className='mt-10 flex flex-col space-y-8'>
                 {navLinks.map((item, index) => (
-                    <Link to={item.link} key={index} className={`flex no-underline text-inherit space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? "bg-[#5DBC5D] text-white font-semibold" : ""}`}
+                    <Link to={item.link} key={index} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? "bg-[#5DBC5D] text-white font-semibold" : ""}`}
                         onClick={() => setActiveNavIndex(index)}
                     >
                         <div className='text-2xl'>
@@ -114,7 +134,20 @@ const NavigationBar = () => {
                         <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
                     </Link>
                 ))}
-
+                
+            </div>
+            <div className='mt-auto flex flex-col space-y-8'>
+                {adminUser.map((item, index) => (
+                    <Link to={item.link} key={index} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index + 8 ? "bg-[#5DBC5D] text-white font-semibold" :"" }`}
+                        onClick={() => setActiveNavIndex(index + 8)}
+                    >
+                        <div className='text-2xl'>
+                            <item.icon />
+                        </div>
+                        <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
+                    </Link>
+                ))}
+                
             </div>
         </motion.div>
     )
