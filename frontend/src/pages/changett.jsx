@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { apiUpdateCurrent } from '../apis/user';
 import { getCurrent } from './../store/users/asyncActions'
-import avatar from './../assets/avatarDefault.png';
+import avatar from '../assets/avatar-default.png';
 import { toast } from 'react-toastify';
 
 const ThaydoiThongtinCaNhan = () => {
