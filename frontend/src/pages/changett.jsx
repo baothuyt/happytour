@@ -1,173 +1,141 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import InputForm from '../components/InputForm'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { apiUpdateUser } from '../apis/updateuser';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import { apiUpdateCurrent } from '../apis/user';
+import { getCurrent } from './../store/users/asyncActions'
+import avatar from './../assets/avatarDefault.png';
+import { toast } from 'react-toastify';
 
 const ThaydoiThongtinCaNhan = () => {
-    // Khai báo state để lưu trữ giá trị của các trường nhập liệu
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        currentPassword: '',
-        newPassword: '',
-        confirmNewPassword: '',
-        role: ''
-    });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState('');
+    const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm()
+    const { current } = useSelector(state => state.user)
+    const dispatch = useDispatch()
+    
+    useEffect(() => {
+        reset({
+            firstname: current?.firstname,
+            lastname: current?.lastname,
+            email: current?.email,
+            mobile: current?.mobile,
+            avatar: current?.avatar,
+            address: current?.address,
+        })
+    }, [current])
+    
 
-    // Hàm xử lý sự kiện thay đổi dữ liệu trong các trường nhập liệu
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [id]: value
-        }));
-    };
-
-    // Hàm xử lý sự kiện khi người dùng nhấn nút cập nhật thông tin
-    const handleSubmit = async () => {
-        if (formData.newPassword !== formData.confirmNewPassword) {
-            alert('Mật khẩu mới và xác nhận mật khẩu mới không khớp!');
-            return;
+    const handleUpdateInfor = async (data) => {
+        const formData = new FormData()
+        if (data.avatar.length > 0) {
+            formData.append('avatar', data.avatar[0])
         }
-
-        setLoading(true);
-        setError(null);
-        setSuccessMessage('');
-
-        try {
-            // Gọi hàm API để cập nhật thông tin người dùng
-            const response = await apiUpdateUser(formData);
-            if (response.success) {
-                setSuccessMessage('Thông tin đã được cập nhật thành công!');
-            } else {
-                setError('Cập nhật thông tin thất bại. Vui lòng thử lại.');
-            }
-        } catch (err) {
-            setError('Có lỗi xảy ra. Vui lòng thử lại.');
-        } finally {
-            setLoading(false);
+        delete data.avatar
+        
+        for(let i of Object.entries(data)) formData.append(i[0], i[1])
+        const response = await apiUpdateCurrent(formData)
+        if(response.success) {
+            dispatch(getCurrent())
+            toast.success(response.mes)
         }
-    };
-
+        else toast.error(response.mes);
+    }
     return (
         <>
             <div className="container">
                 <h3 className="fw-bold mt-4">THAY ĐỔI THÔNG TIN CÁ NHÂN</h3>
-                <div className="row g-3 justify-content-center">
+                <form onSubmit={handleSubmit(handleUpdateInfor)} className="row g-3 justify-content-center">
                     <div className="col-md-6">
-                        <label htmlFor="firstName" className="form-label text-dark fw-bold">
-                            Họ
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="firstName"
-                            placeholder="Nhập họ"
-                            aria-label="First name"
-                            value={formData.firstName}
-                            onChange={handleChange}
+                        <InputForm
+                            label= "Họ"
+                            register={register}
+                            errors={errors}
+                            id='firstname'
+                            validate={{
+                                required: 'Need fill this field'
+                            }}
+                            style='border border-gray-300 rounded-lg px-4 py-2 w-full flex-auto'
                         />
                     </div>
                     <div className="col-md-6">
-                        <label htmlFor="lastName" className="form-label text-dark fw-bold">
-                            Tên
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="lastName"
-                            placeholder="Nhập tên"
-                            aria-label="Last name"
-                            value={formData.lastName}
-                            onChange={handleChange}
+                        <InputForm
+                            label= "Tên"
+                            register={register}
+                            errors={errors}
+                            id='lastname'
+                            validate={{
+                                required: 'Need fill this field'
+                            }}
+                            style='border border-gray-300 rounded-lg px-4 py-2 w-full flex-auto'
                         />
                     </div>
                     <div className="col-12">
-                        <label htmlFor="email" className="form-label text-dark fw-bold">
-                            Địa chỉ email
-                        </label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            placeholder="Nhập địa chỉ email"
-                            aria-label="Email"
-                            value={formData.email}
-                            onChange={handleChange}
+                        <InputForm
+                            label= "Địa chỉ email"
+                            register={register}
+                            errors={errors}
+                            id='email'
+                            validate={{
+                                required: 'Need fill this field',
+                                pattern: {
+                                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                    message: 'Invalid email'
+                                }
+                            }}
+                            style='border border-gray-300 rounded-lg px-4 py-2 w-full flex-auto'
                         />
                     </div>
                     <div className="col-12">
-                        <label htmlFor="currentPassword" className="form-label text-dark fw-bold">
-                            Mật khẩu hiện tại
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="currentPassword"
-                            placeholder="Nhập mật khẩu hiện tại"
-                            aria-label="Current Password"
-                            value={formData.currentPassword}
-                            onChange={handleChange}
+                        <InputForm
+                            label= "Số điện thoại"
+                            register={register}
+                            errors={errors}
+                            id='mobile'
+                            validate={{
+                                required: 'Need fill this field',
+                                pattern: {
+                                    value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/gm,
+                                    message: 'Invalid phone number'
+                                }
+                            }}
+                            style='border border-gray-300 rounded-lg px-4 py-2 w-full flex-auto'
                         />
                     </div>
                     <div className="col-12">
-                        <label htmlFor="newPassword" className="form-label text-dark fw-bold">
-                            Mật khẩu mới
-                        </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="newPassword"
-                            placeholder="Nhập mật khẩu mới"
-                            aria-label="New Password"
-                            value={formData.newPassword}
-                            onChange={handleChange}
+                        <InputForm
+                            label= "Địa chỉ"
+                            register={register}
+                            errors={errors}
+                            id='address'
+                            validate={{
+                                required: 'Need fill this field',
+                            }}
+                            style='border border-gray-300 rounded-lg px-4 py-2 w-full flex-auto'
                         />
                     </div>
-                    <div className="col-12">
-                        <label htmlFor="confirmNewPassword" className="form-label text-dark fw-bold">
-                            Nhập lại mật khẩu mới
+
+                    <div className='flex items-center gap-2'>
+                        <span className='font-medium'>Trạng thái tài khoản:</span>
+                        <span>{current?.isBlocked ? 'Blocked' : 'Actived'}</span>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                        <span className='font-medium'>Vai trò:</span>
+                        <span>{+current?.role === 0 ? 'Admin' : 'User'}</span>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                        <span className='font-medium'>Ngày tạo:</span>
+                        <span>{ moment(current?.createdAt).fromNow() }</span>
+                    </div>
+                    <div className='flex flex-col items-center gap-2'>
+                        <span className='font-medium'></span>
+                        <label htmlFor="file">
+                            <img src={current?.avatar || avatar} alt="avatar" className='w-20 h-20 object-cover rounded-full' />
                         </label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="confirmNewPassword"
-                            placeholder="Nhập lại mật khẩu mới"
-                            aria-label="Confirm New Password"
-                            value={formData.confirmNewPassword}
-                            onChange={handleChange}
-                        />
+                        <input type="file" id='file' {...register('avatar')} hidden />
                     </div>
-                    <div className="col-12">
-                        <label htmlFor="role" className="form-label text-dark fw-bold">
-                            Vai trò
-                        </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="role"
-                            placeholder="Nhập vai trò"
-                            aria-label="Role"
-                            value={formData.role}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col-12 d-flex justify-content-center">
-                        <button 
-                            type="button" 
-                            className="btn btn-success fw-bold px-5" 
-                            onClick={handleSubmit}
-                            disabled={loading}
-                        >
-                            {loading ? 'Đang cập nhật...' : 'Cập nhật thông tin'}
-                        </button>
-                    </div>
-                </div>
-                {error && <div className="alert alert-danger mt-4">{error}</div>}
-                {successMessage && <div className="alert alert-success mt-4">{successMessage}</div>}
+                    {isDirty && <div className='w-full flex justify-end'><button type='submit' className='btn btn-success fw-bold px-5'>Cập nhật thông tin</button></div> }
+                </form>
                 <div className="text-center mt-4">
                     <p className="mb-0">By updating your information, you agree with our </p>
                     <p className="mb-3">Terms & conditions and Privacy statement </p>
