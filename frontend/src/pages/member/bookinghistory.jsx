@@ -2,7 +2,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { apiGetUserBookings } from '../../apis';
 import { useEffect, useState } from 'react';
-import InputForm from '../../components/InputForm';
 import Pagination from '../../components/Pagination/Pagination';
 import { useForm } from 'react-hook-form';
 import { createSearchParams, useSearchParams } from 'react-router-dom';
@@ -11,7 +10,6 @@ import moment from 'moment';
 import CustomSelect from '../../components/inputs/CustomSelect';
 import { statusBookings } from '../../ultils/constant';
 import withBaseComponent from '../../hocs/withBaseComponent'
-import path from '../../ultils/path';
 import Button from '../../components/Button';
 
 const BookingHistory = ({ navigate, location }) => {
@@ -19,7 +17,6 @@ const BookingHistory = ({ navigate, location }) => {
   const [params] = useSearchParams()
   const [booking, setBooking] = useState(null)
   const { register, formState: { errors }, watch, setValue } = useForm()
-  const q = watch('q')
   const status = watch('status')
   const [counts, setCounts] = useState(0)
   const fetchUserBookings = async (params) => {
@@ -56,14 +53,6 @@ const BookingHistory = ({ navigate, location }) => {
         </div>
         <form className='w-[45%] grid grid-cols-2 gap-4'>
           <div className='col-span-1'>
-            {/* <InputForm
-              id='q'
-              register={register}
-              errors={errors}
-              fullWidth
-              placeholder="Search booking by tour's name, status..."
-              style='border rounded'
-            /> */}
           </div>
           <div className='col-span-1 flex items-center'>
             <CustomSelect

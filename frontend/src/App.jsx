@@ -26,8 +26,9 @@ import { getCategories } from "./store/app/actions";
 import ResetPassword from "./pages/public/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import  Modal  from './components/Modal'
+import Modal from './components/Modal'
 import Checkout from "./pages/member/Checkout";
+import { AdminRoute, UserRoute } from './hocs/protectedRoute'
 
 function App() {
   const dispatch = useDispatch();
@@ -37,21 +38,21 @@ function App() {
   }, [])
   return (
     <div className="relative">
-    {isShowModal && <Modal>{modalChildren}</Modal>}
+      {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
         <Route path="/" element={<Layout><HomePages /></Layout>} />
         <Route path="/home" element={<Layout><HomePages /></Layout>} />
-        <Route path="/blog" element={<Layout2><BlogList /></Layout2>} />
-        <Route path="/:category/:tourId/:name" element={<Layout2><Detail /></Layout2>} />
+        <Route path="/blog" element={<UserRoute><Layout2><BlogList /></Layout2></UserRoute>} />
+        <Route path="/:category/:tourId/:name" element={<UserRoute><Layout2><Detail /></Layout2></UserRoute>} />
         <Route path="/dangnhap" element={<Layout1><Dangnhap /></Layout1>} />
-        <Route path="/thanhtoan/:tourId" element={<Layout2><Thanhtoan /></Layout2>} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/bookinghistory" element={<Layout2><BookingHistory /></Layout2>} />
-        <Route path="/thaydoi" element={<Layout1><ThaydoiThongtinCaNhan /></Layout1>} />
-        <Route path="/:category" element={<Layout2><Searchtour /></Layout2>} />
+        <Route path="/thanhtoan/:tourId" element={<UserRoute><Layout2><Thanhtoan /></Layout2></UserRoute>} />
+        <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
+        <Route path="/bookinghistory" element={<UserRoute><Layout2><BookingHistory /></Layout2></UserRoute>} />
+        <Route path="/thaydoi" element={<UserRoute><Layout1><ThaydoiThongtinCaNhan /></Layout1></UserRoute>} />
+        <Route path="/:category" element={<UserRoute><Layout2><Searchtour /></Layout2></UserRoute>} />
         <Route path="/finalregister/:status" element={<FinalRegister />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
           <Route index element={<DashboardPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="user" element={<UsersPage />} />

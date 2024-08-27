@@ -68,7 +68,12 @@ const Dangnhap = () => {
                 if (rsLogin.success) {
                     // dispatch action to save token when login
                     dispatch(login({ isLoggedIn: true, token: rsLogin.accessToken, userData: rsLogin.userData }))
-                    navigate('/home')
+                    toast.success('Login succesfully!')
+                    if (rsLogin.role === 'admin') {
+                        navigate('/admin/dashboard');
+                    } else {
+                        navigate('/');
+                    }
                 } else Swal.fire('Oops!', rsLogin.mes, 'error')
             }
         }

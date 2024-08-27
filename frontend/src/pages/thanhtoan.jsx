@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { apiGetTour } from '../apis';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
@@ -7,8 +7,9 @@ import { totalBooking, formatMoney, formatDate } from '../ultils/helpers';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import withBaseComponent from '../hocs/withBaseComponent';
+import moment from 'moment';
 
-const Thanhtoan = ({navigate, location}) => {
+const Thanhtoan = ({ navigate, location }) => {
   const { current } = useSelector(state => state.user)
   const { tourId } = useParams();
   const [tours, setTour] = useState(null);
@@ -28,15 +29,15 @@ const Thanhtoan = ({navigate, location}) => {
   useEffect(() => {
     if (tourId) fetchTours();
     if (reBookingData) {
-      const {adult,children,infant} = reBookingData
-      setPayload({...payload,adult,children,infant});
+      const { adult, children, infant } = reBookingData
+      setPayload({ ...payload, adult, children, infant });
     }
-  }, [tourId,reBookingData]);
+  }, [tourId, reBookingData]);
 
   const handleBooking = async () => {
     if (!current?.address) {
       return Swal.fire({
-        icon:'info',
+        icon: 'info',
         title: 'Almost!',
         text: 'Please update your address before checkout',
         showCancelButton: true,
@@ -46,11 +47,11 @@ const Thanhtoan = ({navigate, location}) => {
       }).then((result) => {
         if (result.isConfirmed) navigate('/thaydoi')
       })
-    }else if (payload.tripId && current?.address) {
+    } else if (payload.tripId && current?.address) {
       const selectedTrip = tours?.trip?.find(el => el._id === payload.tripId);
-      navigate('/checkout', { state: { payload, tourName: tours?.name, tourPrice: tours?.price, vehicle: selectedTrip.vehicel, licensePlate: selectedTrip.licensePlate } });
+      navigate('/checkout', { state: { payload, tourName: tours?.name, tourPrice: tours?.price, vehicle: selectedTrip.vehicel, licensePlate: selectedTrip.licensePlate, startDate: tours?.startDate, departureTime: selectedTrip.departureTime } });
     } else {
-      Swal.fire('Oops!', 'Vui lòng chọn chuyến đi trước khi tiếp tục.', 'warning');
+      Swal.fire('Oops!', 'Vui lòng chọn giờ khởi hành trước khi tiếp tục.', 'warning');
     }
   };
 
@@ -95,7 +96,7 @@ const Thanhtoan = ({navigate, location}) => {
             <div className="card-body">
               <div className="form-group row">
                 <label className="col-sm-3 col-form-label">
-                  Chọn chuyến đi <span className="text-danger">*</span>
+                  Chọn giờ khởi hành <span className="text-danger">*</span>
                 </label>
                 <div className="col-sm-9">
                   <select
@@ -105,7 +106,7 @@ const Thanhtoan = ({navigate, location}) => {
                   >
                     <option value=""> -Lựa chọn- </option>
                     {tours?.trip?.map(el => (
-                      <option key={el._id} value={el._id}>{`${el.vehicel} (${el.licensePlate})`}</option>
+                      <option key={el._id} value={el._id}>{`${el.vehicel} (${moment(el.departureTime).format("HH:mm")})`}</option>
                     ))}
                   </select>
                 </div>

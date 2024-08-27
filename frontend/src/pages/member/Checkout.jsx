@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import payment from '../../assets/payment.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Paypal from '../../components/common/Paypal';
-import { totalBooking, formatMoney } from '../../ultils/helpers';
+import { totalBooking, formatMoney, formatDate } from '../../ultils/helpers';
 import { useSelector } from 'react-redux';
 import Congratulation from '../../components/common/Congratulation';
+import moment from 'moment';
 
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate()
-    const { payload, tourName, tourPrice, vehicle, licensePlate } = location.state || {}
+    const { payload, tourName, tourPrice, vehicle, licensePlate, startDate, departureTime } = location.state || {}
 
     const { current } = useSelector(state => state.user)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -37,6 +38,7 @@ const Checkout = () => {
                                         <th className='text-center p-2'>Price</th>
                                         <th className='text-center p-2'>Vehicle</th>
                                         <th className='text-right p-2'>License plate</th>
+                                        <th className='text-right p-2'>Depart at</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,6 +47,7 @@ const Checkout = () => {
                                         <td className='text-center p-2'>{tourPrice}</td>
                                         <td className='text-center p-2'>{vehicle}</td>
                                         <td className='text-right p-2'>{licensePlate}</td>
+                                        <td className='text-right p-2'>{`${formatDate(startDate)} ${moment(departureTime).format("HH:mm")}`}</td>
                                     </tr>
                                 </tbody>
                             </table>

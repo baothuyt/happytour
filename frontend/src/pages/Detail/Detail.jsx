@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../store/app/appSlice';
 import Swal from 'sweetalert2'
 import Comment from '../../components/Comment';
+import moment from 'moment';
 
 
 const renderRatingStars = (totalRatings) => {
@@ -112,7 +113,7 @@ const Detail = () => {
                                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                                         {tour?.trip?.map(el => (
                                             <li key={el._id} className="mb-2 p-2 border-b border-gray-300">
-                                                {`${el.vehicel} - ${el.licensePlate}`}
+                                                {`${el.vehicel} ( ${moment(el.departureTime).format("HH:mm")} )`}
                                             </li>
                                         ))}
                                     </ul>
@@ -152,29 +153,34 @@ const Detail = () => {
                         <div className={styles.more_title_tour}>
                             <h3>Chương trình tour</h3>
                         </div>
-                        <div className={styles.more_title_day}>
-                            <h3>NGÀY 01: TP.HỒ CHÍ MINH - HÀ NỘI (Ăn trưa, tối)</h3>
-                        </div>
-                        <div className={styles.content}>
-                            <div className={styles.content_text}>
-                                <p><strong className={styles.info}>Buổi sáng:</strong> Trưởng đoàn <span className={styles.highlight}>VIETNET TRAVEL</span> đón quý khách tại sân bay Tân Sơn Nhất – Ga Quốc Nội hỗ trợ làm thủ tục đáp chuyến bay đi Hà Nội.</p>
-                                <p><strong className={styles.info}>Chuyến bay dự kiến:</strong></p>
-                                <p className={styles.flightinfo}><strong>VIETJET AIR: VJ SGN-HAN 07h10 – 09h15</strong></p>
-                                <p>Đoàn về đến Hà Nội nhận phòng khách sạn và ăn trưa.</p>
-                                <p><strong className={styles.info}>Buổi chiều:</strong> Xe đưa đoàn đi tham quan:</p>
-                                <div className={styles.content_list}>
-                                    <ul>
-                                        <li><strong>Hồ Gươm, tháp Rùa</strong></li>
-                                        <li><strong>Đền Ngọc Sơn</strong></li>
-                                        <li>Chụp ảnh lưu niệm tại <strong>Nhà Hát Lớn Thành Phố.</strong></li>
-                                        <li>Ngồi xe điện tham quan phố cổ <strong>Hà Nội</strong> với <strong>Hàng Ngang, hàng Đào, chợ Đồng Xuân...</strong></li>
-                                        <li><strong>Hồ Tây, chùa Trấn Quốc</strong> ngôi chùa cổ lịch sử lâu đời nhất Hà Nội.</li>
-                                    </ul>
+                        {tour?.destination?.map((el, index) => (
+                            <div key={el._id}>
+                                <div className={styles.more_title_day}>
+                                    <h3>{`NGÀY ${index + 1}: ${el.name}`}</h3>
                                 </div>
-                                <p>Sau khi tham quan thành phố đoàn về nhà hàng dùng cơm tối với <strong>tiệc Buffet.</strong></p>
-                                <p>Đoàn tự do dạo chơi, khám phá phố phường <strong>Hà Nội</strong> về đêm sau khi dùng bữa tối. Quý khách nghỉ đêm tại <strong>Hà Nội.</strong></p>
+                                <div className={styles.content}>
+                                    <div className={styles.content_text}>
+                                        {/* <p><strong className={styles.info}>Buổi sáng:</strong> Trưởng đoàn <span className={styles.highlight}>VIETNET TRAVEL</span> đón quý khách tại sân bay Tân Sơn Nhất – Ga Quốc Nội hỗ trợ làm thủ tục đáp chuyến bay đi Hà Nội.</p>
+                                        <p><strong className={styles.info}>Chuyến bay dự kiến:</strong></p>
+                                        <p className={styles.flightinfo}><strong>VIETJET AIR: VJ SGN-HAN 07h10 – 09h15</strong></p>
+                                        <p>Đoàn về đến Hà Nội nhận phòng khách sạn và ăn trưa.</p>
+                                        <p><strong className={styles.info}>Buổi chiều:</strong> Xe đưa đoàn đi tham quan:</p>
+                                        <div className={styles.content_list}>
+                                            <ul>
+                                                <li><strong>Hồ Gươm, tháp Rùa</strong></li>
+                                                <li><strong>Đền Ngọc Sơn</strong></li>
+                                                <li>Chụp ảnh lưu niệm tại <strong>Nhà Hát Lớn Thành Phố.</strong></li>
+                                                <li>Ngồi xe điện tham quan phố cổ <strong>Hà Nội</strong> với <strong>Hàng Ngang, hàng Đào, chợ Đồng Xuân...</strong></li>
+                                                <li><strong>Hồ Tây, chùa Trấn Quốc</strong> ngôi chùa cổ lịch sử lâu đời nhất Hà Nội.</li>
+                                            </ul>
+                                        </div> */}
+                                        {/* <p>Sau khi tham quan thành phố đoàn về nhà hàng dùng cơm tối với <strong>tiệc Buffet.</strong></p> */}
+                                        <p>{el.description}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
+
                         <div className={styles.content}>
                             <div className={styles.more_title_tour}>
                                 <h3>Lịch Khởi Hành</h3>
@@ -182,24 +188,36 @@ const Detail = () => {
                             <table className={styles.flight_info}>
                                 <thead>
                                     <tr>
-                                        <th>Ngày đi:</th>
-                                        <td>Chuyến bay: VJ</td>
-                                        <td>Giờ bay: 07h10 – 09h15</td>
+                                        <th>Ngày đi: {formatDate(tour?.startDate)}</th>
+                                        <td>Chuyến xe: {tour?.trip?.map((el, index) => (
+                                            <span key={el._id}>
+                                                {el.vehicel}
+                                                {index < tour.trip.length - 1 && ' - '}
+                                            </span>
+                                        ))}</td>
+                                        <td>Giờ khởi hành: {tour?.trip?.map((el, index) => (
+                                            <span key={el._id}>
+                                                {moment(el.departureTime).format('HH:mm')}
+                                                {index < tour.trip.length - 1 && ', '}
+                                            </span>
+                                        ))}</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>Ngày về:</th>
-                                        <td>Chuyến bay: VJ</td>
-                                        <td>Giờ bay: 15h55 – 18h05</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Hãng hàng không:</th>
-                                        <td colSpan={2}>VIETJET AIR</td>
-                                    </tr>
-                                    <tr>
-                                        <th>GIÁ TOUR HOTEL 3*</th>
-                                        <td colSpan={2}>KHÁCH NGƯỜI LỚN</td>
+                                        <th>Ngày về: {formatDate(tour?.endDate)}</th>
+                                        <td>Chuyến xe: {tour?.trip?.map((el, index) => (
+                                            <span key={el._id}>
+                                                {el.vehicel}
+                                                {index < tour.trip.length - 1 && ' - '}
+                                            </span>
+                                        ))}</td>
+                                        <td>Giờ khởi hành: {tour?.trip?.map((el, index) => (
+                                            <span key={el._id}>
+                                                {moment(el.departureTime).format('HH:mm')}
+                                                {index < tour.trip.length - 1 && ', '}
+                                            </span>
+                                        ))}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -210,103 +228,46 @@ const Detail = () => {
                                 <h3>Điều Khoản</h3>
                             </div>
                             <div className={styles.more_title_day}>CHI PHÍ BAO GỒM:</div>
-                            <p>Xe vận chuyển máy lạnh đời mới.</p>
-                            <p>Ngủ nghỉ trong chương trình: ngủ 2 người/phòng (trong trường hợp lẻ ngủ phòng 3)</p>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Khách sạn 3 sao</th>
-                                        <th>Website</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td rowSpan={3}>Hà Nội</td>
-                                        <td>Santa Barbara Hotel</td>
-                                        <td><a href="http://www.santabarbara.com.vn/">http://www.santabarbara.com.vn/</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>First Eden Hotel</td>
-                                        <td><a href="http://firstedenhotel.com">http://firstedenhotel.com</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Dragon Pearl Hotel</td>
-                                        <td><a href="http://dragonpearlhotel.com/">http://dragonpearlhotel.com/</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td rowSpan={3}>Hạ Long</td>
-                                        <td>Kenny Ha Long Hotel</td>
-                                        <td><a href="http://kennyhalonghotel.com/new/">http://kennyhalonghotel.com/new/</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>BMC Thang Long Hotel</td>
-                                        <td><a href="http://www.bmcthanglonghotel.com">http://www.bmcthanglonghotel.com</a></td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>Blue Sky Hotel</td>
-                                        <td><a href="http://www.halongblueskyhotel.com.vn">http://www.halongblueskyhotel.com.vn</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td rowSpan={3}>Sapa</td>
-                                        <td>Công đoàn Sapa Hotel</td>
-                                        <td><a href="http://trade-union.com.vn/news/322.htm">http://trade-union.com.vn/news/322.htm</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Panorama Hotel</td>
-                                        <td><a href="http://www.sapapanoramahotel.com/">http://www.sapapanoramahotel.com/</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sunny Mountain Hotel</td>
-                                        <td><a href="http://sunnymountainhotel.com/">http://sunnymountainhotel.com/</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <p>- Xe du lịch đời mới máy lạnh (15, 29, 35, 45 chỗ tùy theo số lượng khách từng ngày). </p>
+                            <p>- Tàu tham quan trên sông (có trang bị áo phao), xuồng chèo, trái cây, trà mật ong, đờn ca tài tử, xe ngựa. </p>
                         </div>
                         <div className={styles.content}>
                             <div className={styles.content_text}>
                                 <p>Ăn trong chương trình:</p>
                                 <ul>
-                                    <li>Ăn sáng buffet tại khách sạn</li>
-                                    <li>09 bữa chính với các món đặc sản địa phương 150.000VND/suất <strong>( các bữa ăn ở HN 170.000vnd/suất)</strong></li>
-                                    <li><strong>01 bữa ăn đặc sản bánh tôm Tây Hồ</strong></li>
-                                    <li><strong>01 bữa Buffet tại Hà Nội</strong></li>
+                                    <li><strong>Ăn trưa cơm đĩa (tiêu chuẩn thường) hoặc cơm phần 4-5 món. (Các món ăn sẽ thay đổi theo từng bữa).</strong></li>
+                                    <li>- Cá tai tượng chiên xù cuốn bánh tráng + bún + rau sống+ mắm me</li>
+                                    <li>- Cơm trắng | Trái cây | Trà đá + khăn lạnh</li>
+                                    <li>- Xôi chiên phòng</li>
+                                    <li>- Thịt kho</li>
+                                    <li>- Trứng chiên</li>
+                                    <li>- Gỏi Củ hủ dừa tôm thịt</li>
+                                    <li>- Rau luộc + kho quẹt</li>
                                 </ul>
-                                <p>Thuyền thăm quan vịnh Hạ Long, thuyền thăm Tràng An.</p>
-                                <p>Vé vào cửa tham quan các điểm theo chương trình.</p>
-                                <p>Vé tham quan khu du lịch Hàm Rồng và xem ca múa nhạc dân tộc tại Sa Pa.</p>
-                                <p>Xe điện tham quan phố cổ Hà Nội.</p>
-                                <p>Nước và khăn trên xe ôtô: 02 chai nước 500ml + 02 khăn lạnh/người/ngày <i>(Nước Aquafina của Pesico)</i></p>
-                                <p>Hướng dẫn viên chuyên nghiệp, nhiệt tình, chu đáo.</p>
-                                <p>Bảo hiểm du lịch mức: 100.000.000 VND.</p>
                             </div>
-                            <div className={styles.more_title_day}>CHI PHÍ KHÔNG BAO GỒM:</div>
+                            <div className={styles.more_title_day}>TOUR KHÔNG BAO GỒM:</div>
                             <div className={styles.content_text}>
-                                <p>Vé máy bay khứ hồi Sài Gòn - Hà Nội - Sài Gòn. Giá vé có thể thay đổi tại thời điểm xuất vé.</p>
-                                <p>Chi phí cá nhân: Tiền giặt ủi, điện thoại, đồ uống trong các bữa ăn.</p>
-                                <p>Vé cáp treo Yên Tử.</p>
-                                <p>Vé cáp treo Fansipan (800.000vnd/khứ hồi và tàu lửa lên đỉnh 200.000đ/ khách)</p>
+                                <p>Chi phí tham quan ngoài chương trình.</p>
+                                <p>Chi phí ăn uống ngoài chương trình.</p>
                                 <p>Thuế VAT</p>
                             </div>
                             <div className={styles.more_title_day}>CHI PHÍ DÀNH CHO TRẺ EM:</div>
                             <div className={styles.content_text}>
-                                <p>Trẻ em từ 5 tuổi trở xuống miễn phí, gia đình tự túc cho bé</p>
-                                <p>Trẻ em từ 5 - Dưới 10 tuổi tính &frac12; giá người lớn được hưởng: 1 chỗ trên xe, thuyền, 1 suất ăn như người lớn, vé tham quan và ngủ chung giường với ba mẹ.</p>
+                                <p>Trẻ em từ 4 tuổi trở xuống miễn phí, gia đình tự túc cho bé</p>
+                                <p>Trẻ em từ 4 - Dưới 10 tuổi tính 75% giá người lớn được hưởng: 1 chỗ trên xe, thuyền, 1 suất ăn như người lớn, vé tham quan và ngủ chung giường với ba mẹ.</p>
                                 <p>Trẻ em 10 tuổi tính như người lớn.</p>
                             </div>
                             <div className={styles.more_title_day}>ĐIỀU KIỆN HỦY TOUR:</div>
                             <div className={styles.content_text}>
-                                <p>Sau khi xác nhận và thanh toán (ít nhất 50% tiền cọc giữ chỗ và thanh toán 100% tối thiểu 24 tiếng trước ngày khởi hành), nếu:</p>
-                                <p>Hủy tour 10 ngày trước ngày khởi hành: phí hủy 50% tiền tour + 100% tiền vé máy bay</p>
-                                <p>Hủy tour 5 ngày trước ngày khởi hành: phí hủy 70% tiền tour + 100% tiền vé máy bay</p>
-                                <p>Hủy tour trước 24h so với khởi hành: phí hủy 100% tiền tour + 100% tiền vé máy bay</p>
+                                <p>Sau khi xác nhận và thanh toán nếu:</p>
+                                <p>Hủy tour 10 ngày trước ngày khởi hành: phí hủy 50% tiền vé</p>
+                                <p>Hủy tour 5 ngày trước ngày khởi hành: phí hủy 70% tiền vé </p>
+                                <p>Hủy tour trước 24h so với khởi hành: phí hủy 100% tiền vé </p>
                             </div>
                         </div>
                         <div className={styles.notes_section}>
                             <h3>MỘT SỐ LƯU Ý KHÁC:</h3>
                             <ul>
-                                <li>Đón các chuyến bay hạ cánh từ 09h00 – 11h30 và tiễn các chuyến bay cất cánh từ 15h00 – 16h30.</li>
                                 <li>Các điểm tham quan trong chương trình có thể thay thứ tự để phù hợp với tình hình thực tế.</li>
                             </ul>
                             <p>

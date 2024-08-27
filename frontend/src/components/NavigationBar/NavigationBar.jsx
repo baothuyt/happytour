@@ -1,11 +1,11 @@
 import React, { useState, Fragment } from 'react';
 import Logo from './../../assets/Logo.png';
-import { MdOutlineDashboard } from "react-icons/md";
+import { MdCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import { GrMapLocation } from "react-icons/gr";
 import { LuTicket } from "react-icons/lu";
 import { TbPlaneDeparture } from "react-icons/tb";
-import { FaRegCommentDots, FaRegUserCircle } from "react-icons/fa";
+import { FaClipboardList, FaRegCommentDots, FaRegUserCircle } from "react-icons/fa";
 import { LuLayers } from "react-icons/lu";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import RightArrow from "./../../assets/icons/rightArrow.svg";
@@ -128,7 +128,7 @@ const NavigationBar = () => {
             className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"}`}
         >
             <div className='flex space-x-3 items-center'>
-                <img src={Logo} alt="logo images" className='w-36 h-auto' />
+                <Link to='/'><img src={Logo} alt="logo images" className='w-36 h-auto' /></Link>
             </div>
 
             <div
@@ -179,9 +179,9 @@ const NavigationBar = () => {
                     </Fragment>
                 ))}
             </div>
-            <div className='mt-auto flex flex-col space-y-8'>
+            <div className='ml-2 mt-4 flex flex-col space-y-4'>
                 {adminUser.map((item, index) => (
-                    <Link to={item.link} key={index} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index + 8 ? "bg-[#5DBC5D] text-white font-semibold" :"" }`}
+                    <Link to={item.link} key={index} className={`flex space-x-3 rounded text-black ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index + 8 ? "bg-[#5DBC5D] text-white font-semibold" :"" }`}
                         onClick={() => setActiveNavIndex(index + 8)}
                     >
                         <div className='text-2xl'>

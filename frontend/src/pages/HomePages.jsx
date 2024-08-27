@@ -231,7 +231,7 @@ const HomePages = () => {
                             <div className={styles.tour_content_item_text}>
                                 <h2>{el.name}</h2>
                                 <p>{el.description}</p>
-                                <button>Khám phá</button>
+                                <Link to={`/${el.category?.name?.toLowerCase()}/${el._id}/${el.name}`}><button>Khám phá</button></Link>
                             </div>
                         </div>
                     ))}
