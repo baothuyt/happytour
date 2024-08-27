@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import Button from '../../components/Button';
 
 const CategoryPage = () => {
+  const [user, setUser] = useState({});
   const { handleSubmit, register, formState: { errors } } = useForm();
   const [categories, setCategories] = useState([]);
   const [queries, setQueries] = useState({ q: '' });
@@ -26,6 +27,11 @@ const CategoryPage = () => {
     fetchCategories(params);
   }, [queriesDebounce]);
 
+  useEffect(() => {
+    let userTemp = JSON.parse(localStorage.getItem('persist:tour/user'));
+    setUser(userTemp);
+  }, [])
+
   // Handle editing a category
   const handleEdit = (category) => {
     setEditCategory(category);
@@ -34,7 +40,7 @@ const CategoryPage = () => {
 
   // Handle saving an edited category
   const handleSaveEdit = async () => {
-    await apiUpdateCategory(editCategory._id, { name: editName });
+    await apiUpdateCategory(editCategory._id, { name: editName }, user.token);
     const updatedCategories = categories.map(cat =>
       cat._id === editCategory._id ? { ...cat, name: editName } : cat
     );
@@ -44,17 +50,22 @@ const CategoryPage = () => {
 
   // Handle deleting a category
   const handleDelete = async (categoryId) => {
-    await apiDeleteCategory(categoryId);
+    await apiDeleteCategory(categoryId, user.token);
     setCategories(categories.filter(cat => cat._id !== categoryId));
   };
 
   // Handle adding a new category
   const handleAddCategory = async () => {
-    const response = await apiAddCategory({ name: newCategoryName });
-    if (response.success) {
-      setCategories([...categories, response.newCategory]); // Thêm danh mục mới vào danh sách
-      setNewCategoryName(''); // Xóa tên danh mục sau khi thêm
-    }
+    const response = await apiAddCategory({ name: newCategoryName }, user.token);
+    console.log(response);
+    console.log(categories);
+    // if (response.success) {
+    setCategories([...categories, {
+      "_id": Math.random(),
+      "name": newCategoryName
+    }]); // Thêm danh mục mới vào danh sách
+    setNewCategoryName(''); // Xóa tên danh mục sau khi thêm
+    // }
   };
 
   const handleUpdate = (data) => {
@@ -109,7 +120,7 @@ const CategoryPage = () => {
                     <td>{idx + 1}</td>
                     <td>
                       {editCategory && editCategory._id === category._id ? (
-                        <input 
+                        <input
                           type="text"
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
