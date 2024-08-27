@@ -46,33 +46,41 @@ const navLinks = [
 
     },
     {
-        name: "Tours",
+        name: "Manage Tours",
         icon: GrMapLocation,
-        link: "tour",
-        type: 'SINGLE',
-        path: `/${path.TOURPAGE}`
-
+       
+        type: 'PARENT',
+        
+        children: [
+            {
+                name: "Create Tours",
+                icon: MdCreateNewFolder,
+                link: "create",
+                type: 'SINGLE',
+                path: `/${path.TOURPAGE}/${path.CREATETOURS}`,
+            },
+            {
+                name: "List Tours",
+                icon: FaClipboardList,
+                link: "tour",
+                type: 'SINGLE',
+                path: `/${path.TOURPAGE}`,
+            }
+        ]
     },
+    
     {
-        name: "CreateTours",
-        icon: GrMapLocation,
-        link: "create",
-        type: 'SINGLE',
-        path: `/${path.CREATETOURS}`
-
-    },
-    {
-        name: "Tour Active",
+        name: "Trip",
         icon: TbPlaneDeparture,
-        link: "tour-active",
+        link: "trip",
         type: 'SINGLE',
         path: `/${path.TOURACTIVEPAGE}`
 
     },
     {
-        name: "Comments",
+        name: "Destination",
         icon: FaRegCommentDots,
-        link: "comment",
+        link: "destination",
         type: 'SINGLE',
         path: `/${path.COMMENTPAGE}`
 
@@ -103,18 +111,24 @@ const variants = {
     nonExpanded: { width: "10%" },
 };
 
+
 const NavigationBar = () => {
-    const [activeNavIndex, setActiveNavIndex] = useState(0)
+    const [activeNavIndex, setActiveNavIndex] = useState(0);
     const [isExpanded, setIsExpanded] = useState(true);
+    const [isToursExpanded, setIsToursExpanded] = useState(false);
+
+    const handleToggleTours = () => {
+        setIsToursExpanded(!isToursExpanded);
+    };
 
     return (
         <motion.div
             animate={isExpanded ? "expanded" : "nonExpanded"}
             variants={variants}
-            className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"
-                }`}>
+            className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"}`}
+        >
             <div className='flex space-x-3 items-center'>
-                <img src={Logo} alt="logo images"className='w-36 h-auto' />
+                <img src={Logo} alt="logo images" className='w-36 h-auto' />
             </div>
 
             <div
@@ -125,16 +139,45 @@ const NavigationBar = () => {
 
             <div className='mt-10 flex flex-col space-y-8'>
                 {navLinks.map((item, index) => (
-                    <Link to={item.link} key={index} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? "bg-[#5DBC5D] text-white font-semibold" : ""}`}
-                        onClick={() => setActiveNavIndex(index)}
-                    >
-                        <div className='text-2xl'>
-                            <item.icon />
-                        </div>
-                        <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
-                    </Link>
+                    <Fragment key={index}>
+                        {item.type === 'PARENT' ? (
+                            <div className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? " font-semibold" : ""}`}
+                                onClick={() => { setActiveNavIndex(index); setIsToursExpanded(!isToursExpanded); }}
+                                style={{ textDecoration: 'none', color: 'black' }}
+                            >
+                                <div className='text-2xl'>
+                                    
+                                    <item.icon />
+                                </div>
+                                <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
+                            </div>
+                        ) : (
+                            <Link to={item.link} className={`flex space-x-3 p-2 rounded ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === index ? " font-semibold" : ""}`}
+                                onClick={() => setActiveNavIndex(index)}
+                                style={{ textDecoration: 'none', color: 'black' }}
+                            >
+                                <div className='text-2xl'>
+                                    <item.icon />
+                                </div>
+                                <span className={isExpanded ? "block" : "hidden"}>{item.name}</span>
+                            </Link>
+                        )}
+
+                        {item.type === 'PARENT' && isToursExpanded && item.children && (
+                            item.children.map((child, childIndex) => (
+                                <Link to={child.link} key={childIndex} className={`flex space-x-3 p-2 rounded ml-6 ${isExpanded ? "" : "mx-auto"} ${activeNavIndex === childIndex ? " font-semibold" : ""}`}
+                                    onClick={() => setActiveNavIndex(childIndex)}
+                                    style={{ textDecoration: 'none', color: 'black' }}
+                                >
+                                    <div className='text-2xl'>
+                                    
+                                    </div>
+                                    <span className={isExpanded ? "block" : "hidden"}>{child.name}</span>
+                                </Link>
+                            ))
+                        )}
+                    </Fragment>
                 ))}
-                
             </div>
             <div className='mt-auto flex flex-col space-y-8'>
                 {adminUser.map((item, index) => (
@@ -150,7 +193,9 @@ const NavigationBar = () => {
                 
             </div>
         </motion.div>
-    )
-}
+    );
+};
+
+
 
 export default NavigationBar;
