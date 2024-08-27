@@ -1,42 +1,91 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { apiGetUser } from '../../apis/user'
-import { roles } from '../../ultils/constant'
+import { apiDeleteUser, apiGetUser, apiUpdateUser } from '../../apis/user'
+import {  roles, blockstatus} from '../../ultils/constant'
 import moment from 'moment'
 import InputField from '../../components/InputField'
+import Pagination from '../../components/Pagination/Pagination'
 import useDebounce from '../../hooks/useDebounce'
 import { useForm } from 'react-hook-form'
 import Select  from '../../components/Select'
-import Button from '../../components/Button'
+// import Slect  from '../../components/Slect'
+import Buttons from './Buttons'
+import {useSearchParams} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import Swal from 'sweetalert2'
+import clsx from 'clsx'
 const UsersPage = () => {
-  const {handleSubmit, register, formState: {errors}} = useForm({
-    status:''
+  const {handleSubmit, register, formState: {errors}, reset} = useForm({
+    role:'',
+    isBlocked:''
   })
+  
   const [users, setUsers] = useState(null)
   const [queries, setQueries] = useState({
     q: ""
   })
+  const [update, setUpdate] = useState(false)
   const [editElm, setEditElm] = useState(null)
-  // const [params] = useS
+  const [params] = useSearchParams()
+
   const fetchUsers = async (params) =>{
-    const response = await apiGetUser(params)
+    const response = await apiGetUser({...params, limit: import.meta.env.VITE_REACT_APP_PRODUCT_LIMIT})
     
     if (response.success) setUsers(response)
   }
+
+  const render = useCallback(() => {
+    setUpdate(!update)
+  },[update])
   // cứ sau 0.8s sẽ gọi api
   const queriesDebounce = useDebounce(queries.q, 800)
   useEffect(() =>{
-    const params = {}
-    if (queriesDebounce) params.q = queriesDebounce
-    fetchUsers(params)
-  },[queriesDebounce])
-  const handleUpdate = (data) =>{
-    console.log(data)
+    const queries = Object.fromEntries([...params])
+    if (queriesDebounce) queries.q = queriesDebounce
+    fetchUsers(queries)
+  },[queriesDebounce, params])
+  const handleUpdate = async (data) =>{
+    const response = await apiUpdateUser(data, editElm._id)
+    // console.log(response)
+    if (response.success){
+      setEditElm(null)
+      render()
+      toast.success(response.mes)
+      window.location.reload();
+    } else toast.error(response.mes)
+    // console.log(data)
   }
   
+  const handleDeleteUser = async (uid) => {
+    Swal.fire({
+      title: 'Xóa người dùng',
+      text: 'Bạn có chắc chắn muốn xóa người dùng này?',
+      showCancelButton: true
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        apiDeleteUser(uid).then((response) => {
+          if (response.success) {
+            setUsers(prevUsers => prevUsers.filter(user => user._id !== uid));
+            toast.success(response.mes);
+            window.location.reload();
+          } else {
+            toast.error(response.mes);
+          }
+        });
+      }
+    });
+  };
   
+  useEffect(() => {
+    if (editElm) {
+      reset({
+        role: editElm.role,
+        status: editElm.isBlocked
+      });
+    }
+  }, [editElm]);
   return (
     <>
-    <div className="flex justify-between m-5">
+    <div className={clsx('flex justify-between m-5', editElm)}>
         <h1 className="text-2xl font-bold">User list</h1>
         
         <div className="flex">
@@ -59,7 +108,7 @@ const UsersPage = () => {
         </div>
         <form onSubmit={handleSubmit(handleUpdate)} >
           {/* {editElm && <button type='submit' className="btn btn-primary">Add new user</button>} */}
-          {/* {editElm && <Button type='submit'>Update</Button>} */}
+          {editElm && <Buttons type='submit'>Update</Buttons>}
           <table className="table">
             {/* head */}
             <thead>
@@ -78,16 +127,40 @@ const UsersPage = () => {
               {users?.users?.map((el, idx) =>(
                 
                   <tr key = {el._id}>
-                    <th>{idx+1}</th>
-                    <th>{el.email}</th>
-                    <th>{`${el.lastname} ${el.firstname}`}</th>
-                    <th>{roles.find(role => +role.code === +el.role)?.value}</th>
-                    <th>{el.mobile}</th>
-                    <th>{editElm?._id === el._id ? <Select /> : <span>{el.isBlocked ? 'Blocked' : 'Active'}</span>}</th>
-                    <th>{moment(el.createdAt).format('DD/MM/YYYY')}</th>
+                    <td>{idx+1}</td>
+                    <td>{el.email}</td>
+                    <td>{`${el.lastname} ${el.firstname}`}</td>
                     <td>
-                      <span onClick={() => setEditElm(el)} className='px-2 text-orange-600 hover:underline cursor-pointer'>Edit</span>
-                      <span className='px-2 text-orange-600 hover:underline cursor-pointer'>Delete</span>
+                      {editElm?._id === el._id 
+                      ? <Select
+                      register={register}
+                      fullWith
+                      errors = {errors}
+                      defaultValue = {editElm?.role}
+                      id= {'role'}
+                      validate={{ required: true}}
+                      options = {roles}
+                       /> : <span>{el.role}</span>}
+                    </td>
+                    <td>{el.mobile}</td>
+                    <td>
+                      {editElm?._id === el._id 
+                      ? <Select 
+                      register={register}
+                      fullWith
+                      errors = {errors}
+                      defaultValue = {el.isBlocked}
+                      id= {'isBlocked'}
+                      validate={{ required: 'Require fill.'}}
+                      options={blockstatus}
+                      /> : <span>{el.isBlocked ? 'Blocked' : 'Active'}</span>}
+                    </td>
+                    <td>{moment(el.createdAt).format('DD/MM/YYYY')}</td>
+                    <td> 
+                      {editElm?._id === el._id ? <span onClick={() => setEditElm(null)} className='px-2 text-orange-600 hover:underline cursor-pointer'>Back</span>
+                      : <span onClick={() => setEditElm(el)} className='px-2 text-orange-600 hover:underline cursor-pointer'>Edit</span>}
+                      
+                      <span onClick={() => handleDeleteUser(el._id)} className='px-2 text-orange-600 hover:underline cursor-pointer'>Delete</span>
                     </td>
                   </tr>
                 
@@ -97,6 +170,11 @@ const UsersPage = () => {
 
             </tbody>
           </table>
+          <div className='w-full flex justify-end'>
+            <Pagination
+            totalCount={users?.counts}
+            />
+          </div>
         </form>
         
       </div>
