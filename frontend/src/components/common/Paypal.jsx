@@ -31,7 +31,7 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, setIsSuccess })
         if (response.success) {
             await apiUpdateStatusBooking(response?.bookingData?._id, { status: 'Success' })
             setIsSuccess(true)
-            Swal.fire('Congratulation!', 'Booking succesfully.', 'success').then(() => navigate('/home'))
+            Swal.fire('Congratulation!', 'Booking succesfully.', 'success').then(() => navigate('/bookinghistory'))
         }
     }
 

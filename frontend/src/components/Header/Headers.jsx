@@ -52,7 +52,7 @@ const Headers = () => {
           <li style={{ '--x': 4 }}><Link to="/blog">Blog</Link></li>
           <li style={{ '--x': 5 }}><Link to="/contact">Liên hệ</Link></li>
           <li style={{ '--x': 5 }}>
-          {isLoggedIn && current &&
+            {isLoggedIn && current &&
               <Link to="/bookinghistory">Lịch sử đặt vé</Link>}
           </li>
           <li style={{ '--x': 6 }}>

@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../store/app/appSlice';
 import Swal from 'sweetalert2'
 import Comment from '../../components/Comment';
+import moment from 'moment';
 
 
 const renderRatingStars = (totalRatings) => {
@@ -112,7 +113,7 @@ const Detail = () => {
                                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                                         {tour?.trip?.map(el => (
                                             <li key={el._id} className="mb-2 p-2 border-b border-gray-300">
-                                                {`${el.vehicel} - ${el.licensePlate}`}
+                                                {`${el.vehicel} ( ${moment(el.departureTime).format("HH:mm")} )`}
                                             </li>
                                         ))}
                                     </ul>

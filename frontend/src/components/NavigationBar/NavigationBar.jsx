@@ -94,7 +94,7 @@ const NavigationBar = () => {
             className={`px-10 py-8 flex flex-col border border-r-2 w-1/5 h-screen relative ${isExpanded ? "px-10" : "px-4"
                 }`}>
             <div className='flex space-x-3 items-center'>
-                <img src={Logo} alt="logo images" className='w-36 h-auto' />
+                <Link to='/'><img src={Logo} alt="logo images" className='w-36 h-auto' /></Link>
             </div>
 
             <div
