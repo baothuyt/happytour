@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useRef, useState } from 'react'
-import logo from '../assets/Logo.png'
-import { voteOptions } from '../ultils/constant'
+import logo from '@/assets/Logo.png'
+import { voteOptions } from '@/ultils/constant'
 import { AiFillStar } from 'react-icons/ai'
-import Button from '../components/Button'
+import Button from '@/components/button/Button'
 
 const VoteOption = ({ nameProduct, handleSubmitVoteOption }) => {
     const modalRef = useRef()

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import InputForm from '../../components/InputForm';
+import InputForm from '@/components/InputForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { apiUpdateCurrent } from '../../apis/user';
-import { getCurrent } from '../../store/users/asyncActions'
-import avatar from '../../assets/avatarDefault.png';
+import { apiUpdateCurrent } from '@/apis/user';
+import { getCurrent } from '@/store/users/asyncActions'
+import avatar from '@/assets/avatarDefault.png';
 import { toast } from 'react-toastify';
 
 const ChangeInforAdmin = () => {

@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useState } from 'react'
 import { AiOutlineDown } from 'react-icons/ai'
-import { tourType } from '../ultils/constant'
+import { tourType } from '@/ultils/constant'
 import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { apiGetTours } from '../apis'
-import useDebounce from '../hooks/useDebounce'
+import { apiGetTours } from '@/apis'
+import useDebounce from '@/hooks/useDebounce'
 
 const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }) => {
     const navigate = useNavigate()

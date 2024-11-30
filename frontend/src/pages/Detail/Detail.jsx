@@ -4,19 +4,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { apiGetTour, apiRatings } from '../../apis/tour';
+import { apiGetTour, apiRatings } from '@/apis/tour';
 import { useCallback, useEffect } from 'react';
-import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
+import Breadcrumbs from '@/components/bread-crumbs/Breadcrumbs';
 import { useState } from 'react';
-import { formatMoney, formatDate, renderStarFromNumber } from '../../ultils/helpers';
-import VoteBar from '../../components/VoteBar';
-import Button from '../../components/Button';
-import VoteOption from '../../components/VoteOption';
+import { formatMoney, formatDate, renderStarFromNumber } from '@/ultils/helpers';
+import Button from '@/components/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModal } from '../../store/app/appSlice';
+import { showModal } from '@/store/app/appSlice';
 import Swal from 'sweetalert2'
-import Comment from '../../components/Comment';
 import moment from 'moment';
+import VoteBar from '@/components/tour-rate/VoteBar';
+import VoteOption from '@/components/tour-rate/VoteOption';
+import Comment from '@/components/tour-rate/Comment';
 
 
 const renderRatingStars = (totalRatings) => {

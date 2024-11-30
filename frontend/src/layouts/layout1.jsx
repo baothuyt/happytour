@@ -1,18 +1,15 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
-// import Footer from "../components/Footer/Footer";
-// import Headers from "../components/Header/Headers";
-import '../index.css';
-import Headeruser from '../components/Header/Headeruser';
+import '@/index.css';
+import HeaderUser from '@/components/header/HeaderUser';
 
 const Layout1 = ({ children }) => {
   return (
     <div>
-      <Headeruser/>
+      <HeaderUser />
       <div className="section">
         {children}
       </div>
-      {/* <Footer/> */}
     </div>
   );
 };
@@ -22,23 +19,3 @@ Layout1.propTypes = {
 };
 
 export default Layout1;
-
-
-
-// import Headers from '../components/Header/Headers';
-// import Footer from "../components/Footer/Footer";
-// import '../index.css';
-
-// const Layout = ({ children }) => {
-//   return (
-//     <div>
-//       <Headers/>
-//       <div className="section">
-//         {children}
-//       </div>
-//       <Footer/>
-//     </div>
-//   );
-// };
-
-// export default Layout;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { apiGetCategories, apiAddCategory, apiUpdateCategory, apiDeleteCategory } from '../../apis/app';
-import InputField from '../../components/InputField';
+import InputField from '../../components/inputs/InputField';
 import useDebounce from '../../hooks/useDebounce';
 import { useForm } from 'react-hook-form';
-import Button from '../../components/Button';
+import Button from '../../components/button/Button';
 
 const CategoryPage = () => {
   const [user, setUser] = useState({});

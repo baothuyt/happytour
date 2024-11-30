@@ -1,10 +1,8 @@
 export const roles = [
     {
-        
         value: 'Admin'
     },
     {
-        
         value: 'User'
     }
 ]

@@ -1,14 +1,12 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import InputForm from '../../components/InputForm'
-import Select from '../../components/Select'
+import InputForm from '@/components/inputs/InputForm'
+import Select from '@/components/select/Select'
 import { useSelector } from 'react-redux'
-import Buttons from './Buttons'
-import MarkdownEditor from '../../components/MarkdownEditor'
-import { validate, getBase64 } from '../../ultils/helpers'
-import { apiCreateTour} from '../../apis/tour'
-// import { Link } from 'react-router-dom'
+import Buttons from '@/components/button/Buttons'
+import MarkdownEditor from '@/components/markdowns/MarkdownEditor'
+import { validate, getBase64 } from '@/ultils/helpers'
 const CreateTour = () => {
     
 

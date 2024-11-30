@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { apiGetBookings } from '../../apis/booking'; // Đảm bảo đường dẫn đúng
+import { apiGetBookings } from '@/apis/booking'; // Đảm bảo đường dẫn đúng
 import moment from 'moment';
-import InputField from '../../components/InputField';
+import InputField from '@/components/inputs/InputField';
 import './Css/BookingPage.css'
 
 const BookingPage = () => {

@@ -1,5 +1,4 @@
 import React, { memo }from "react";
-// import { validate } from "../ultils/helpers";
 import clsx from 'clsx'
 const InputForm = ({
     label, 

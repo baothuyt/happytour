@@ -1,16 +1,16 @@
 // import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { apiGetUserBookings } from '../../apis';
+import { apiGetUserBookings } from '@/apis';
 import { useEffect, useState } from 'react';
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '@/components/pagination/Pagination';
 import { useForm } from 'react-hook-form';
 import { createSearchParams, useSearchParams } from 'react-router-dom';
-import { formatMoney, totalBooking } from '../../ultils/helpers';
+import { formatMoney, totalBooking } from '@/ultils/helpers';
 import moment from 'moment';
-import CustomSelect from '../../components/inputs/CustomSelect';
-import { statusBookings } from '../../ultils/constant';
-import withBaseComponent from '../../hocs/withBaseComponent'
-import Button from '../../components/Button';
+import CustomSelect from '@/components/inputs/CustomSelect';
+import { statusBookings } from '@/ultils/constant';
+import withBaseComponent from '@/hocs/withBaseComponent'
+import Button from '@/components/button/Button';
 
 const BookingHistory = ({ navigate, location }) => {
 
@@ -95,7 +95,7 @@ const BookingHistory = ({ navigate, location }) => {
                       <strong>Tổng tiền:</strong> {`${formatMoney(totalBooking((+el?.tour?.price || 0), Number(el?.adult), Number(el?.children)))} VND`}
                     </p>
                     <p className="card-text mb-2">
-                      <strong>Trạng thái:</strong> <span className={`badge ${el.status === 'Success' ? 'badge-success' : 'badge-warning'}`}>{el.status}</span>
+                      <strong>Trạng thái:</strong> <span className={`badge text-white ${el.status === 'Success' ? 'badge-success' : 'badge-warning'}`}>{el.status}</span>
                     </p>
                     <p className="card-text mb-2">
                       <small className="text-muted">

@@ -1,17 +1,17 @@
-import styles from './Searchtour.module.css';
+import styles from './SearchTour.module.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React, { useEffect, useState, useCallback } from 'react'
 import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
-import TourCard from '../../components/TourCard';
+import TourCard from '../../components/cards/TourCard';
 import { apiGetTours } from '../../apis'
-import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
-import SearchItem from '../../components/SearchItem';
-import InputSelect from '../../components/InputSelect';
+import SearchItem from '../../components/search-item/SearchItem';
+import InputSelect from '../../components/inputs/InputSelect';
 import { sorts } from '../../ultils/constant';
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '../../components/pagination/Pagination';
+import Breadcrumbs from '../../components/bread-crumbs/Breadcrumbs';
 
 const Search = () => {
     const navigate = useNavigate();

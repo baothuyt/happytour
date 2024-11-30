@@ -1,15 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { apiGetTour } from '../apis';
+import { apiGetTour } from '@/apis';
 import { useEffect, useState } from 'react';
-import Button from '../components/Button';
-import { totalBooking, formatMoney, formatDate } from '../ultils/helpers';
+import Button from '@/components/button/Button';
+import { totalBooking, formatMoney, formatDate } from '@/ultils/helpers';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-import withBaseComponent from '../hocs/withBaseComponent';
+import withBaseComponent from '@/hocs/withBaseComponent';
 import moment from 'moment';
 
-const Thanhtoan = ({ navigate, location }) => {
+const PaymentPage = ({ navigate, location }) => {
   const { current } = useSelector(state => state.user)
   const { tourId } = useParams();
   const [tours, setTour] = useState(null);
@@ -35,19 +35,19 @@ const Thanhtoan = ({ navigate, location }) => {
   }, [tourId, reBookingData]);
 
   const handleBooking = async () => {
-    if (!current?.address) {
+    if (!current) {
       return Swal.fire({
         icon: 'info',
         title: 'Almost!',
-        text: 'Please update your address before checkout',
+        text: 'Please go to login',
         showCancelButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Go to update',
+        confirmButtonText: 'Go to login',
         cancelButtonText: 'Cancel',
       }).then((result) => {
-        if (result.isConfirmed) navigate('/thaydoi')
+        if (result.isConfirmed) navigate('/dangnhap')
       })
-    } else if (payload.tripId && current?.address) {
+    } else if (payload.tripId && current) {
       const selectedTrip = tours?.trip?.find(el => el._id === payload.tripId);
       navigate('/checkout', { state: { payload, tourName: tours?.name, tourPrice: tours?.price, vehicle: selectedTrip.vehicel, licensePlate: selectedTrip.licensePlate, startDate: tours?.startDate, departureTime: selectedTrip.departureTime } });
     } else {
@@ -207,4 +207,4 @@ const Thanhtoan = ({ navigate, location }) => {
   );
 };
 
-export default withBaseComponent(Thanhtoan);
+export default withBaseComponent(PaymentPage);

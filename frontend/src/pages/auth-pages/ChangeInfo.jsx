@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import InputForm from '../components/InputForm'
+import InputForm from '@/components/inputs/InputForm'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { apiUpdateCurrent } from '../apis/user';
-import { getCurrent } from './../store/users/asyncActions'
-import avatar from './../assets/avatar-default.png';
+import { apiUpdateCurrent } from '@/apis/user';
+import { getCurrent } from '@/store/users/asyncActions'
+import avatar from '@/assets/avatar-default.png';
 import { toast } from 'react-toastify';
 
-const ThaydoiThongtinCaNhan = () => {
+const ChangeInfo = () => {
     const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm()
     const { current } = useSelector(state => state.user)
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         const savedCurrent = JSON.parse(localStorage.getItem('current'));
         if (savedCurrent) {
@@ -22,14 +22,14 @@ const ThaydoiThongtinCaNhan = () => {
             dispatch(getCurrent());
         }
     }, []);
-    
+
     useEffect(() => {
         if (current) {
             localStorage.setItem('current', JSON.stringify(current));
         }
     }, [current]);
-    
-    
+
+
 
     const handleUpdateInfor = async (data) => {
         const formData = new FormData()
@@ -37,10 +37,10 @@ const ThaydoiThongtinCaNhan = () => {
             formData.append('avatar', data.avatar[0])
         }
         delete data.avatar
-        
-        for(let i of Object.entries(data)) formData.append(i[0], i[1])
+
+        for (let i of Object.entries(data)) formData.append(i[0], i[1])
         const response = await apiUpdateCurrent(formData)
-        if(response.success) {
+        if (response.success) {
             dispatch(getCurrent())
             toast.success(response.mes)
         }
@@ -53,7 +53,7 @@ const ThaydoiThongtinCaNhan = () => {
                 <form onSubmit={handleSubmit(handleUpdateInfor)} className="row g-3 justify-content-center">
                     <div className="col-md-6">
                         <InputForm
-                            label= "Họ"
+                            label="Họ"
                             register={register}
                             errors={errors}
                             id='firstname'
@@ -65,7 +65,7 @@ const ThaydoiThongtinCaNhan = () => {
                     </div>
                     <div className="col-md-6">
                         <InputForm
-                            label= "Tên"
+                            label="Tên"
                             register={register}
                             errors={errors}
                             id='lastname'
@@ -77,7 +77,7 @@ const ThaydoiThongtinCaNhan = () => {
                     </div>
                     <div className="col-12">
                         <InputForm
-                            label= "Địa chỉ email"
+                            label="Địa chỉ email"
                             register={register}
                             errors={errors}
                             id='email'
@@ -93,7 +93,7 @@ const ThaydoiThongtinCaNhan = () => {
                     </div>
                     <div className="col-12">
                         <InputForm
-                            label= "Số điện thoại"
+                            label="Số điện thoại"
                             register={register}
                             errors={errors}
                             id='mobile'
@@ -109,7 +109,7 @@ const ThaydoiThongtinCaNhan = () => {
                     </div>
                     <div className="col-12">
                         <InputForm
-                            label= "Địa chỉ"
+                            label="Địa chỉ"
                             register={register}
                             errors={errors}
                             id='address'
@@ -130,7 +130,7 @@ const ThaydoiThongtinCaNhan = () => {
                     </div>
                     <div className='flex items-center gap-2'>
                         <span className='font-medium'>Ngày tạo:</span>
-                        <span>{ moment(current?.createdAt).fromNow() }</span>
+                        <span>{moment(current?.createdAt).fromNow()}</span>
                     </div>
                     <div className='flex flex-col items-center gap-2'>
                         <span className='font-medium'></span>
@@ -139,7 +139,7 @@ const ThaydoiThongtinCaNhan = () => {
                         </label>
                         <input type="file" id='file' {...register('avatar')} hidden />
                     </div>
-                    {isDirty && <div className='w-full flex justify-end'><button type='submit' className='btn btn-success fw-bold px-5'>Cập nhật thông tin</button></div> }
+                    {isDirty && <div className='w-full flex justify-end'><button type='submit' className='btn btn-success fw-bold px-5'>Cập nhật thông tin</button></div>}
                 </form>
                 <div className="text-center mt-4">
                     <p className="mb-0">By updating your information, you agree with our </p>
@@ -152,4 +152,4 @@ const ThaydoiThongtinCaNhan = () => {
     );
 }
 
-export default ThaydoiThongtinCaNhan;
+export default ChangeInfo;

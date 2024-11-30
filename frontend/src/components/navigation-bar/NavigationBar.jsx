@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import Logo from './../../assets/Logo.png';
+import Logo from '@/assets/Logo.png';
 import { MdCreateNewFolder, MdOutlineDashboard } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import { GrMapLocation } from "react-icons/gr";
@@ -8,11 +8,10 @@ import { TbPlaneDeparture } from "react-icons/tb";
 import { FaClipboardList, FaRegCommentDots, FaRegUserCircle } from "react-icons/fa";
 import { LuLayers } from "react-icons/lu";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import RightArrow from "./../../assets/icons/rightArrow.svg";
+import RightArrow from "@/assets/icons/rightArrow.svg";
 import { motion } from "framer-motion";
 import { Link, NavLink } from 'react-router-dom';
-//import { createSlug } from '../../ultils/helpers'
-import path from '../../ultils/path';
+import path from '@/ultils/path';
 const navLinks = [
     {
         name: "Dashboard",

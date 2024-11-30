@@ -1,9 +1,8 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
-import Footer from "../components/Footer/Footer";
-// import Headers from "../components/Header/Headers";
-import '../index.css';
-import HeaderPage from '../components/HeaderPage/HeaderPage';
+import Footer from "@/components/footer/Footer";
+import '@/index.css';
+import HeaderPage from '@/components/header-page/HeaderPage';
 
 const Layout2 = ({ children }) => {
   return (

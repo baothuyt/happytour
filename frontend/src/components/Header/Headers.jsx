@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Headers.module.css'; // Import the CSS module
 import { Link, useNavigate } from 'react-router-dom';
-import videoSource from '../../assets/bn2.mp4';
-import { getCurrent } from '../../store/users/asyncActions';
+import videoSource from '@/assets/bn2.mp4';
+import { getCurrent } from '@/store/users/asyncActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdLogOut } from "react-icons/io";
-import { logout, clearMessage } from '../../store/users/userSlice';
+import { logout, clearMessage } from '@/store/users/userSlice';
 import Swal from 'sweetalert2';
 
 const Headers = () => {

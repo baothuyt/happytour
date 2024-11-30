@@ -5,7 +5,7 @@ import {
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
 import { useEffect } from "react";
-import { apiCreateBooking, apiUpdateStatusBooking } from "../../apis/booking";
+import { apiCreateBooking, apiUpdateStatusBooking } from "@/apis/booking";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 

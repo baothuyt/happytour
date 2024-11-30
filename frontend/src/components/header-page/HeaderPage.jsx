@@ -1,10 +1,10 @@
 import styles from './HeaderPage.module.css'; // Import the CSS module
-import vietnamFlag  from '../../assets/vietnam-flag-circular-17769.png'
+import vietnamFlag  from '@/assets/vietnam-flag-circular-17769.png'
 import { Link, useNavigate } from 'react-router-dom';
-import { getCurrent } from '../../store/users/asyncActions';
+import { getCurrent } from '@/store/users/asyncActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdLogOut } from "react-icons/io";
-import { logout, clearMessage } from '../../store/users/userSlice';
+import { logout, clearMessage } from '@/store/users/userSlice';
 import Swal from 'sweetalert2';
 import { useEffect } from 'react';
 

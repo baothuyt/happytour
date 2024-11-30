@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { apiGetTours } from '../../apis/tour'; // Assuming there's an API function to fetch tours
+import { apiGetTours } from '@/apis/tour'; // Assuming there's an API function to fetch tours
 import moment from 'moment';
-import InputField from '../../components/InputField';
-import useDebounce from '../../hooks/useDebounce';
+import InputField from '@/components/inputs/InputField';
+import useDebounce from '@/hooks/useDebounce';
 import { useForm } from 'react-hook-form';
-import Button from '../../components/Button';
 
 const ToursPage = () => {
   const { handleSubmit, register, formState: { errors } } = useForm({
@@ -76,7 +75,7 @@ const ToursPage = () => {
                     <td>{tour.description}</td>
                     <td>{tour.thumb}</td>
                     <td>{moment(tour.createdAt).format('DD/MM/YYYY')}</td>
-                    
+
                     <td>
                       <span
                         onClick={() => setEditTour(tour)}

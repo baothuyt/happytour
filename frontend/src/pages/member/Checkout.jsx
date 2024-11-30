@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import payment from '../../assets/payment.svg'
+import payment from '@/assets/payment.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Paypal from '../../components/common/Paypal';
-import { totalBooking, formatMoney, formatDate } from '../../ultils/helpers';
+import Paypal from '@/components/common/Paypal';
+import { totalBooking, formatMoney, formatDate } from '@/ultils/helpers';
 import { useSelector } from 'react-redux';
-import Congratulation from '../../components/common/Congratulation';
+import Congratulation from '@/components/common/Congratulation';
 import moment from 'moment';
 
 const Checkout = () => {

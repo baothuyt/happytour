@@ -1,18 +1,18 @@
-import styles from './HomePages.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import Headers from '../components/Header/Headers';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { createSlug } from '@/ultils/helpers'
+import { apiGetTours } from '@/apis/tour';
+import { useState, useEffect } from 'react';
+import { getNewTours } from '@/store/tours/asyncAction';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './HomePages.module.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { createSlug } from '../ultils/helpers'
-import { apiGetTours } from '../apis/tour';
-import { useState, useEffect } from 'react';
 import Slider from "react-slick";
-import { getNewTours } from '../store/tours/asyncAction';
-import { useDispatch, useSelector } from 'react-redux';
+import Headers from '@/components/header/Headers';
 
 const settings = {
     dots: false,
@@ -37,7 +37,7 @@ const renderRatingStars = (totalRatings) => {
 
 const images = [
     "https://static.vinwonders.com/2022/11/phuot-mien-nam-3.jpg",
-    "https://vtv1.mediacdn.vn/thumb_w/640/562122370168008704/2023/10/23/phu-quoc-1-1698055838982645990788.jpg",
+    "https://rootytrip.com/wp-content/uploads/2024/07/phu-quoc.jpg",
     "https://www.kkday.com/vi/blog/wp-content/uploads/du-lich-sapa.jpg",
     "https://image.nhandan.vn/w800/Uploaded/2024/igpcvcvjntc8510/2023_02_08/trang-an-5882.jpg.webp"
 ];
@@ -45,15 +45,15 @@ const images = [
 const HomePages = () => {
     const [bestSellers, setBestSellers] = useState(null)
     const dispath = useDispatch()
-    const {newTours} = useSelector(state => state.tours)
+    const { newTours } = useSelector(state => state.tours)
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     // Handle search ridirect to Searchtour Component
     const handleSearch = () => {
-      navigate(`/tours?name=${encodeURIComponent(searchTerm)}`);
+        navigate(`/tours?name=${encodeURIComponent(searchTerm)}`);
     };
     // get data of user's reducer in store
-    const {isLoggedIn, current} =useSelector(state => state.user)
+    const { isLoggedIn, current } = useSelector(state => state.user)
     // Get categories from store
     const { categories } = useSelector(state => state.app);
     // Get tours by axios
@@ -76,18 +76,18 @@ const HomePages = () => {
             </section>
             <section className={styles.nice_place}>
                 <div className={styles.container}>
-                    <h1>Địa Điểm Nổi Bật</h1>
+                    <h1 className='text-2xl'>Địa Điểm Nổi Bật</h1>
                     <div className='' id="row">
                         <Slider {...settings}>
                             {bestSellers?.map(el => (
                                 <div key={el._id} className={styles.nice_place_item}>
                                     <div className={styles.nice_place_img}>
-                                        <img src={ el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
+                                        <img src={el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
                                     </div>
                                     <div className={styles.nice_place_text}>
                                         <h2 className='truncate'>{el.name}</h2>
                                         {(renderRatingStars(el.totalRatings).map(star => star))}
-                                       
+
                                         <p>{el.description}</p>
                                         <Link to={`/${el.category?.name?.toLowerCase()}/${el._id}/${el.name}`}>
                                             <button>Đặt Tour</button>
@@ -127,7 +127,6 @@ const HomePages = () => {
                                     </div>
                                     <div className={styles.center_left_top}>
                                         <img className={styles.img_center_left_top} alt="" src="https://image.tinnhanhchungkhoan.vn/1200x630/Uploaded/2024/bpikpjik/2023_06_14/da-nang-5-8014.jpg" />
-
                                         <div className={styles.box_text}>
                                             <div className={styles.heading_container}>
                                                 <span className={styles.head_container}>
@@ -155,7 +154,7 @@ const HomePages = () => {
                                         </div>
                                     </div>
                                     <div className={styles.center_bot_r}>
-                                        <img className={styles.img_bot_r} alt="" src="https://www.quangbinhtravel.vn/wp-content/uploads/2013/05/ca-chep-rong.jpg" />
+                                        <img className={styles.img_bot_r} alt="" src="https://vcdn1-dulich.vnecdn.net/2022/06/02/Son-Tra-2238-1654169672.jpg?w=0&h=0&q=100&dpr=1&fit=crop&s=FScJfxXuNeEPtYatWhzlZg" />
                                     </div>
                                     <div className={styles.center_bot_ct}>
                                         <img className={styles.img_center_bot_ct} alt="" src="https://owa.bestprice.vn/images/articles/uploads/top-15-cac-dia-diem-du-lich-da-nang-hot-nhat-ban-khong-the-bo-qua-5ed9cb93af7eb.jpg" />
@@ -178,7 +177,7 @@ const HomePages = () => {
                                         <img
                                             className={styles.img_right_bot}
                                             alt=""
-                                            src="https://booking.muongthanh.com/images/news/2022/07/original/thumbnail_1657768372.jpg"
+                                            src="https://owa.bestprice.vn/images/articles/uploads/top-15-cac-dia-diem-du-lich-da-nang-hot-nhat-ban-khong-the-bo-qua-5ed9cb93af7eb.jpg"
                                         />
                                     </div>
                                 </div>
@@ -220,21 +219,21 @@ const HomePages = () => {
 
             <section className={styles.tour}>
                 <div className={styles.container}>
-                    <h1>Tour Mới Nhất 2024</h1>
+                    <h1 className='text-2xl'>Tour Mới Nhất 2024</h1>
                     <div className={styles.tour_content} id="row">
 
-                    {newTours?.map(el => (
-                        <div key={el._id} className={styles.tour_content_item} id="row">
-                            <div className={styles.tour_content_item_img}>
-                                <img src={ el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
+                        {newTours?.map(el => (
+                            <div key={el._id} className={styles.tour_content_item} id="row">
+                                <div className={styles.tour_content_item_img}>
+                                    <img src={el.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s'} alt={`hình ảnh ${el.name}`} />
+                                </div>
+                                <div className={styles.tour_content_item_text}>
+                                    <h2>{el.name}</h2>
+                                    <p>{el.description}</p>
+                                    <Link to={`/${el.category?.name?.toLowerCase()}/${el._id}/${el.name}`}><button>Khám phá</button></Link>
+                                </div>
                             </div>
-                            <div className={styles.tour_content_item_text}>
-                                <h2>{el.name}</h2>
-                                <p>{el.description}</p>
-                                <Link to={`/${el.category?.name?.toLowerCase()}/${el._id}/${el.name}`}><button>Khám phá</button></Link>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
 
                     </div>
 
@@ -243,7 +242,7 @@ const HomePages = () => {
 
             <section id="review" className={styles.review}>
                 <div className={styles.container}>
-                    <h1>Đánh giá trải nghiệm</h1>
+                    <h1 className='text-2xl'>Đánh giá trải nghiệm</h1>
                     <div className={styles.review_content} id="row">
                         <div className={styles.review_item}>
                             <div className={styles.review_item_text}>
@@ -308,7 +307,7 @@ const HomePages = () => {
 
             <section id="contact" className={styles.contact}>
                 <div className={styles.container}>
-                    <h1>Danh sách tour</h1>
+                    <h1 className='text-2xl'>Danh sách tour</h1>
                     <Swiper
                         // install Swiper modules
                         modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -325,7 +324,7 @@ const HomePages = () => {
 
                                 <NavLink to={el.name} href="#the-weeknd" className={styles.event}>
                                     <div className={styles.event__image}>
-                                        <img src={images[index % images.length]} alt="The Weeknd" className={styles.zoomImage} />
+                                        <img src={images[index % images.length]} alt="category" className={styles.zoomImage} />
                                         <div className={`${styles.event__indicator} ${styles.event__date}`}>
                                             {el.name} <div className={styles.event__date__month}>
                                             </div>

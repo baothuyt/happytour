@@ -1,9 +1,3 @@
-
-// src/BlogList.js
-
-// import React from 'react';
-
-
 const BlogList = () => {
   const posts = [
     {

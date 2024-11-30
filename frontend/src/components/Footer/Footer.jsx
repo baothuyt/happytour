@@ -1,14 +1,14 @@
 import styles from './Footer.module.css';
-const Footer  = () => {
-    return (
-        <footer id="footer" className={styles.footer}>
+const Footer = () => {
+	return (
+		<footer id="footer" className={styles.footer}>
 			<div className="">
 				<div className={styles.footer_top}>
 					<div className={styles.rows}>
 						<div className="col-md-3 col-sm-6">
 							<div className={styles.single_footer_widget}>
 								<div className={styles.footer_logo}>
-                                    <img src="./img/_Travel Logo.png" alt=""/>
+									<img src="./img/_Travel Logo.png" alt="" />
 								</div>
 								<h4>THÔNG TIN CHUYỂN KHOẢN</h4>
 								<div className={styles.footer_contact}>
@@ -45,44 +45,29 @@ const Footer  = () => {
 								</div>
 							</div>
 						</div>
-                        <div className="col-md-3 col-xs-12">
-                                    <div className={styles.single_footer_widget}>
-                                        <h2>CHÍNH SÁCH</h2>
-                                        <div className="row">
-                                            <div className="col-md-7 col-xs-6">
-                                                <ul>
-                                                    <li><a href="#"><i className="fas fa-thin fa-chevron-right"></i> Chính sách bảo mật</a></li>
-                                                    <li><a href="#"><i className="fas fa-thin fa-chevron-right"></i> Điều khoản chung</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <div className={styles.footer_copyright}>
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <p></p>
-                            </div>
-                            <div className="col-sm-6">
-                                <div className={styles.footer_social}>
-                                    <a href="#"><i className="fa fa-facebook"></i></a>	
-                                    <a href="#"><i className="fa fa-instagram"></i></a>
-                                    <a href="#"><i className="fa fa-linkedin"></i></a>
-                                    <a href="#"><i className="fa fa-pinterest-p"></i></a>
-                                    <a href="#"><i className="fa fa-twitter"></i></a>	
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </footer>
-    
-        
-    
-    
-    )
+						<div className="col-md-3 col-xs-12">
+							<div className={styles.single_footer_widget}>
+								<h2>CHÍNH SÁCH</h2>
+								<div className="row">
+									<div className="col-md-7 col-xs-6">
+										<ul>
+											<li><a href="#"><i className="fas fa-thin fa-chevron-right"></i> Chính sách bảo mật</a></li>
+											<li><a href="#"><i className="fas fa-thin fa-chevron-right"></i> Điều khoản chung</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</footer>
+
+
+
+
+	)
 }
 
 export default Footer;

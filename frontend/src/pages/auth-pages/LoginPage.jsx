@@ -1,16 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, useNavigate } from 'react-router-dom';
-import InputField from '../components/InputField';
-import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
+import InputField from '@/components/inputs/InputField';
+import Button from '@/components/button/Button';
 import { useCallback, useEffect, useState } from 'react';
-import { apiLogin, apiRegister, apiForgotPassword, apiFinalRegister } from '../apis'
+import { apiLogin, apiRegister, apiForgotPassword, apiFinalRegister } from '@/apis'
 import Swal from 'sweetalert2';
-import { login } from '../store/users/userSlice'
+import { login } from '@/store/users/userSlice'
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { validate } from '../ultils/helpers';
+import { validate } from '@/ultils/helpers';
 
-const Dangnhap = () => {
+const LoginPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [payload, setPayload] = useState({
@@ -67,13 +67,9 @@ const Dangnhap = () => {
                 const rsLogin = await apiLogin(data)
                 if (rsLogin.success) {
                     // dispatch action to save token when login
-                    dispatch(login({ isLoggedIn: true, token: rsLogin.accessToken, userData: rsLogin.userData }))
+                    dispatch(login({ isLoggedIn: true, token: rsLogin.accessToken }))
                     toast.success('Login succesfully!')
-                    if (rsLogin.role === 'admin') {
-                        navigate('/admin/dashboard');
-                    } else {
-                        navigate('/');
-                    }
+                    navigate('/');
                 } else Swal.fire('Oops!', rsLogin.mes, 'error')
             }
         }
@@ -138,7 +134,7 @@ const Dangnhap = () => {
                     <div className="col-12">
                         {isRegister &&
                             <>
-                                <div className='col-12'>
+                                <div className='col-12 pb-3'>
                                     <div className="row">
                                         <div className="col-6">
                                             <InputField
@@ -159,8 +155,6 @@ const Dangnhap = () => {
                                             />
                                         </div>
                                     </div>
-
-
                                 </div>
                                 <div className="col-12">
                                     <InputField
@@ -219,11 +213,6 @@ const Dangnhap = () => {
                                     onClick={() => setIsForgotPassword(true)}
                                 > Quên mật khẩu ?</span>}
                             </div>
-                            {/* <div className="row">
-                                <div className="col-12 flex justify-center mt-3">
-                                <Link to={'/'}>Về trang chủ?</Link>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                     <div className="col-4">
@@ -241,4 +230,4 @@ const Dangnhap = () => {
     );
 }
 
-export default Dangnhap;
+export default LoginPage;
